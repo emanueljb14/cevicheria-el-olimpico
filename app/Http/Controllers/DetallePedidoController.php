@@ -13,12 +13,11 @@ class DetallePedidoController extends Controller
     /**
      * Muestra todos los detalles (útil para consultas administrativas rápidas).
      */
-    public function index()
-    {
-        $detalles = DetallePedido::with(['pedido', 'producto'])->latest()->get();
-        return view('detalle_pedidos.index', compact('detalles'));
-    }
-
+   public function index()
+{
+    $detalles = DetallePedido::with(['pedido', 'producto'])->latest()->paginate(15);
+    return view('detalle_pedidos.index', compact('detalles'));
+}
     /**
      * Agrega un nuevo producto a un pedido existente.
      */
@@ -64,7 +63,7 @@ class DetallePedidoController extends Controller
             ]);
         });
 
-        return redirect()->back()->with('success', 'Producto agregado al pedido.');
+        return redirect()->route('pedidos.show', $request->pedido_id)->with('success', 'Producto agregado con éxito.');
     }
 
     /**

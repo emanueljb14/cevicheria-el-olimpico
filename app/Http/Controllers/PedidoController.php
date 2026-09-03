@@ -78,11 +78,13 @@ class PedidoController extends Controller
         return redirect()->route('pedidos.index')->with('success', 'Pedido creado exitosamente.');
     }
 
-    public function show(Pedido $pedido)
-    {
-        $pedido->load(['cliente', 'mesa', 'usuario', 'detalles.producto']);
-        return view('pedidos.show', compact('pedido'));
-    }
+   public function show(Pedido $pedido)
+{
+    $pedido->load(['cliente', 'mesa', 'usuario', 'detalles.producto']);
+    $productos = \App\Models\Producto::where('estado', true)->get();
+
+    return view('pedidos.show', compact('pedido', 'productos'));
+}
 
     public function cambiarEstado(Request $request, Pedido $pedido)
     {
