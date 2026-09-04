@@ -37,9 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('mesas/{mesa}/cambiar-estado', [MesaController::class, 'cambiarEstado'])->name('mesas.cambiar-estado');
 
     // Pedidos y detalles
+    // Cambia estas líneas bajo el grupo // Pedidos y detalles:
     Route::resource('pedidos', PedidoController::class);
-    Route::patch('pedidos/{pedido}/cambiar-estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiar-estado');
-    Route::resource('detalle-pedidos', DetallePedidoController::class)->except(['create', 'edit']);
+    Route::patch('pedidos/{pedido}/cambiar-estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado'); // Cambiado a camelCase
+    Route::resource('detalle_pedidos', DetallePedidoController::class)->except(['create', 'edit']); // Cambiado guion por guion bajo
 
     // Inventario y ajuste de stock
     Route::resource('inventario', InventarioController::class);
