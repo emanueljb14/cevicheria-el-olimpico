@@ -221,6 +221,13 @@
                 <a class="sidebar-link {{ request()->routeIs('reportes.*') ? 'active' : '' }}" href="{{ route('reportes.index') }}">
                     <i class="fa-solid fa-chart-column"></i><span>Reportes</span>
                 </a>
+
+                <!-- INTELIGENCIA / MACHINE LEARNING -->
+                <p class="menu-label">Análisis Predictivo</p>
+
+                <a class="sidebar-link {{ request()->routeIs('analytics.*') ? 'active' : '' }}" href="{{ url('/analytics') }}">
+                    <i class="fa-solid fa-brain"></i><span>Predicciones ML</span>
+                </a>
             </nav>
 
             <div class="sidebar-footer">
