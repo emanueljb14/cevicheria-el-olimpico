@@ -1,18 +1,23 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('title', 'Reportes y analíticas')
+@section('page-title', 'Reportes y analíticas')
+
+@push('styles')
     <style>
         :root {
-            --primary: #38bdf8;
-            --primary-dark: #0284c7;
-            --primary-light: #e0f2fe;
-            --background: #f0f9ff;
+            --primary: #00a7a7;
+            --primary-dark: #0b5875;
+            --primary-light: #e7f7f7;
+            --background: #f4f7f8;
             --surface: #ffffff;
-            --text: #0c4a6e;
-            --muted: #64748b;
-            --border: #bae6fd;
+            --text: #18242b;
+            --muted: #68757d;
+            --border: #d8e4e8;
             --danger: #dc2626;
             --warning: #d97706;
             --success: #059669;
-            --shadow: 0 12px 30px rgba(14, 165, 233, .10);
+            --shadow: 0 12px 30px rgba(6, 43, 61, .09);
         }
 
         * { box-sizing: border-box; }
@@ -22,7 +27,7 @@
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
             color: var(--text);
-            background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 55%, #f0f9ff 100%);
+            background: transparent;
         }
 
         .topbar {
@@ -32,8 +37,8 @@
             gap: 24px;
             padding: 18px clamp(20px, 5vw, 76px);
             color: white;
-            background: linear-gradient(110deg, #0284c7, #38bdf8);
-            box-shadow: 0 5px 18px rgba(2, 132, 199, .20);
+            background: linear-gradient(110deg, #062b3d, #0b5875);
+            box-shadow: 0 5px 18px rgba(6, 43, 61, .20);
         }
 
         .brand { display: flex; align-items: center; gap: 12px; }
@@ -47,7 +52,7 @@
 
         .container { width: min(1180px, calc(100% - 32px)); margin: 38px auto 60px; }
         .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
-        h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 40px); letter-spacing: -.04em; }
+        h1 { margin: 0 0 8px; color:#062b3d; font-family:'Playfair Display',serif; font-size: clamp(28px, 4vw, 40px); letter-spacing: -.03em; }
         .subtitle { margin: 0; color: var(--muted); }
 
         .btn {
@@ -57,7 +62,8 @@
             transition: .2s ease;
         }
         .btn:hover { transform: translateY(-1px); }
-        .btn-primary { color: white; background: var(--primary-dark); box-shadow: 0 8px 18px rgba(2,132,199,.22); }
+        .btn-primary { color: #062b3d; background: #f6c453; box-shadow: 0 8px 18px rgba(246,196,83,.25); }
+        .btn-primary:hover { color:#062b3d; background:#e0b043; }
         .btn-light { color: var(--primary-dark); background: #ecfeff; }
         .btn-danger { color: var(--danger); background: #fef2f2; }
 
@@ -120,17 +126,9 @@
             .section { padding: 18px; }
         }
     </style>
-</head>
-    <x-slot name="header">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
-            <h2 style="margin:0; color:#0c4a6e; font-size:1.25rem; font-weight:700;">
-                Reportes y analíticas
-            </h2>
-            <a href="{{ route('dashboard') }}" style="color:#0284c7; font-size:.875rem; font-weight:600; text-decoration:none;">
-                ← Volver al panel
-            </a>
-        </div>
-    </x-slot>
+@endpush
+
+@section('content')
 
     <main class="container">
         <section class="page-header">
@@ -265,6 +263,9 @@
         </section>
     </main>
 
+@endsection
+
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ventas = @json($ventasPorDia->reverse()->values());
@@ -281,8 +282,8 @@
                     datasets: [{
                         label: 'Ventas (S/)',
                         data: ventas.map(item => Number(item.total)),
-                        borderColor: '#0284c7',
-                        backgroundColor: 'rgba(56, 189, 248, .16)',
+                        borderColor: '#00a7a7',
+                        backgroundColor: 'rgba(0, 167, 167, .14)',
                         fill: true,
                         tension: .38,
                         pointRadius: 4,
@@ -306,4 +307,4 @@
             });
         }
     </script>
-</x-app-layout>
+@endpush
