@@ -1,129 +1,95 @@
 @extends('layouts.app')
 
-@section('title', 'Registrar Cliente')
-@section('page-title', 'Clientes')
-
-@push('styles')
-<style>
-    .clients-page { --navy:#062b3d; --sea:#00a7a7; --gold:#f6c453; --gold-dark:#e0b043; --paper:#fff; --muted:#68757d; --line:#dfe9eb; color:#18242b; }
-    .clients-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:24px; }
-    .clients-kicker { display:block; margin-bottom:7px; color:var(--sea); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
-    .clients-header h1 { margin:0 0 7px; color:var(--navy); font:700 clamp(30px,4vw,43px)/1.08 'Playfair Display',serif; }
-    .clients-header p { margin:0; color:var(--muted); }
-    
-    .secondary-button { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 18px; border-radius:999px; color:var(--navy); background:#e7f7f7; font-size:13px; font-weight:800; text-decoration:none; transition:.2s; }
-    .secondary-button:hover { background:#d0f0f0; color:var(--navy); }
-
-    .form-card { border:1px solid var(--line); border-radius:20px; background:var(--paper); box-shadow:0 12px 32px rgba(6,43,61,.07); padding:28px; max-width:800px; margin:0 auto; }
-    .form-title { margin:0 0 20px; color:var(--navy); font:700 22px 'Playfair Display',serif; border-bottom:1px solid var(--line); padding-bottom:12px; }
-
-    .form-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:20px; }
-    .form-group { display:flex; flex-direction:column; gap:6px; }
-    .form-group.full-width { grid-column:span 2; }
-    
-    .form-group label { color:var(--navy); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
-    .input-wrapper { position:relative; display:flex; align-items:center; }
-    .input-wrapper i { position:absolute; left:14px; color:#8a9ba0; font-size:14px; }
-    .form-control { width:100%; height:44px; padding:0 14px 0 40px; border:1px solid #cfdddf; border-radius:12px; outline:none; font-size:13px; color:#3e4d53; background:var(--paper); transition:.15s; }
-    .form-control:focus { border-color:var(--sea); box-shadow:0 0 0 3px rgba(0,167,167,.1); }
-    .form-control.is-invalid { border-color:#b53b35; }
-    
-    .error-text { color:#b53b35; font-size:11px; font-weight:700; margin-top:2px; }
-
-    .form-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:28px; padding-top:20px; border-top:1px solid var(--line); }
-    .submit-button { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 24px; border:none; border-radius:999px; color:var(--navy); background:var(--gold); box-shadow:0 10px 22px rgba(246,196,83,.24); font-size:13px; font-weight:800; cursor:pointer; transition:.2s; }
-    .submit-button:hover { background:var(--gold-dark); transform:translateY(-2px); }
-    .cancel-button { display:inline-flex; align-items:center; justify-content:center; padding:12px 20px; border-radius:999px; color:var(--muted); background:transparent; font-size:13px; font-weight:700; text-decoration:none; transition:.2s; }
-    .cancel-button:hover { color:var(--navy); background:#f2f6f7; }
-
-    body.dark-mode .clients-page { --paper:#0b3447; --line:#28505f; color:#eaf3f5; }
-    body.dark-mode .clients-header h1, body.dark-mode .form-title, body.dark-mode .form-group label { color:#fff; }
-    body.dark-mode .form-control { color:#e7f1f3; border-color:#315565; background:#0d3a4d; }
-    body.dark-mode .cancel-button:hover { background:#12455c; color:#fff; }
-
-    @media(max-width:650px) { 
-        .clients-header { align-items:stretch; flex-direction:column; }
-        .form-grid { grid-template-columns:1fr; }
-        .form-group.full-width { grid-column:span 1; }
-        .form-actions { flex-direction:column-reverse; }
-        .submit-button, .cancel-button { width:100%; }
-    }
-</style>
-@endpush
-
 @section('content')
-<div class="clients-page">
-    <header class="clients-header">
-        <div>
-            <span class="clients-kicker">Directorio de atención</span>
-            <h1>Nuevo cliente</h1>
-            <p>Ingresa los datos para registrar un nuevo cliente en la plataforma.</p>
+<div class="container py-4" style="max-width: 900px;">
+    <!-- Encabezado Estilo El Olímpico -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                 style="width: 48px; height: 48px; background-color: #f2a922; color: #0d1b1e;">
+                <i class="bi bi-person-plus-fill fs-5 fw-bold"></i>
+            </div>
+            <div>
+                <span class="badge rounded-pill text-uppercase tracking-wider px-3 py-1 mb-1" 
+                      style="background-color: #fff8e7; color: #d99100; border: 1px solid #fce8b3; font-size: 0.68rem; font-weight: 700;">
+                    Módulo de Clientes
+                </span>
+                <h4 class="fw-bold mb-0 text-dark" style="font-family: 'Playfair Display', Georgia, serif;">Registrar Cliente</h4>
+            </div>
         </div>
-        <a class="secondary-button" href="{{ route('clientes.index') }}">
-            <i class="fa-solid fa-arrow-left"></i> Volver a la lista
+        <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary rounded-pill px-3 fs-7 fw-medium">
+            <i class="bi bi-arrow-left me-1"></i> Volver
         </a>
-    </header>
+    </div>
 
-    <div class="form-card">
-        <h2 class="form-title">Información del cliente</h2>
-
+    <!-- Card Estilo Claro Minimalista -->
+    <div class="card border-0 rounded-4 shadow-sm p-4 p-md-5" style="background-color: #ffffff; border: 1px solid #eaeaea !important;">
         <form action="{{ route('clientes.store') }}" method="POST">
             @csrf
 
-            <div class="form-grid">
-                {{-- Nombre completo --}}
-                <div class="form-group full-width">
-                    <label for="nombre">Nombre completo *</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" placeholder="Ej. Juan Pérez" required>
+            <!-- Identificación -->
+            <div class="mb-4">
+                <h6 class="text-dark fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-card-heading" style="color: #d99100;"></i> Documentación de Identidad
+                </h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="tipo_documento" class="form-label text-uppercase text-secondary fw-bold fs-7">Tipo Doc. <span class="text-danger">*</span></label>
+                        <select name="tipo_documento" id="tipo_documento" class="form-select border-0 text-dark p-3 @error('tipo_documento') is-invalid @enderror" style="background-color: #f8f9fa;" required>
+                            <option value="DNI" {{ old('tipo_documento') == 'DNI' ? 'selected' : '' }}>DNI</option>
+                            <option value="RUC" {{ old('tipo_documento') == 'RUC' ? 'selected' : '' }}>RUC</option>
+                            <option value="CE" {{ old('tipo_documento') == 'CE' ? 'selected' : '' }}>Carné de Extranjería</option>
+                        </select>
                     </div>
-                    @error('nombre')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
-                </div>
 
-                {{-- Teléfono --}}
-                <div class="form-group">
-                    <label for="telefono">Teléfono / Celular</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-phone"></i>
-                        <input type="text" id="telefono" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}" placeholder="Ej. 987654321">
+                    <div class="col-md-8">
+                        <label for="numero_documento" class="form-label text-uppercase text-secondary fw-bold fs-7">N° Documento <span class="text-danger">*</span></label>
+                        <input type="text" name="numero_documento" id="numero_documento" class="form-control border-0 text-dark p-3 @error('numero_documento') is-invalid @enderror" style="background-color: #f8f9fa;" value="{{ old('numero_documento') }}" placeholder="Ej. 72839102" required>
+                        @error('numero_documento')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('telefono')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
-                </div>
 
-                {{-- Correo Electrónico --}}
-                <div class="form-group">
-                    <label for="email">Correo electrónico</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="cliente@correo.com">
+                    <div class="col-12 mt-3">
+                        <label for="nombre" class="form-label text-uppercase text-secondary fw-bold fs-7">Nombre Completo / Razón Social <span class="text-danger">*</span></label>
+                        <input type="text" name="nombre" id="nombre" class="form-control border-0 text-dark p-3 @error('nombre') is-invalid @enderror" style="background-color: #f8f9fa;" value="{{ old('nombre') }}" placeholder="Ej. Juan Pérez u Holas S.A.C." required>
+                        @error('nombre')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('email')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                {{-- Dirección --}}
-                <div class="form-group full-width">
-                    <label for="direccion">Dirección fiscal / domicilio</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <input type="text" id="direccion" name="direccion" class="form-control @error('direccion') is-invalid @enderror" value="{{ old('direccion') }}" placeholder="Ej. Av. Principal 123">
-                    </div>
-                    @error('direccion')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
                 </div>
             </div>
 
-            <div class="form-actions">
-                <a href="{{ route('clientes.index') }}" class="cancel-button">Cancelar</a>
-                <button type="submit" class="submit-button">
-                    <i class="fa-solid fa-floppy-disk"></i> Guardar cliente
+            <hr style="border-color: #f0f0f0;" class="my-4">
+
+            <!-- Contacto -->
+            <div class="mb-4">
+                <h6 class="text-dark fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-geo-alt-fill" style="color: #d99100;"></i> Datos de Contacto
+                </h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="telefono" class="form-label text-uppercase text-secondary fw-bold fs-7">Teléfono / Celular</label>
+                        <input type="text" name="telefono" id="telefono" class="form-control border-0 text-dark p-3" style="background-color: #f8f9fa;" value="{{ old('telefono') }}" placeholder="987654321">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label text-uppercase text-secondary fw-bold fs-7">Correo Electrónico</label>
+                        <input type="email" name="email" id="email" class="form-control border-0 text-dark p-3" style="background-color: #f8f9fa;" value="{{ old('email') }}" placeholder="cliente@ejemplo.com">
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <label for="direccion" class="form-label text-uppercase text-secondary fw-bold fs-7">Dirección de Entrega</label>
+                        <input type="text" name="direccion" id="direccion" class="form-control border-0 text-dark p-3" style="background-color: #f8f9fa;" value="{{ old('direccion') }}" placeholder="Av. Los Olivos 123">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="d-flex align-items-center justify-content-end gap-3 pt-4 mt-4 border-top" style="border-color: #f0f0f0 !important;">
+                <a href="{{ route('clientes.index') }}" class="btn btn-link text-decoration-none text-muted fw-semibold px-3">Cancelar</a>
+                <button type="submit" class="btn rounded-pill px-4 py-2-5 fw-bold shadow-sm text-dark" style="background-color: #f2a922; border: none;">
+                    <i class="bi bi-person-check me-1"></i> Guardar Cliente
                 </button>
             </div>
         </form>
