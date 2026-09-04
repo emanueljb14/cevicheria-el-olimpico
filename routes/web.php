@@ -50,6 +50,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('pagos', PagoController::class)->except(['edit']);
     Route::resource('ventas', VentaController::class)->only(['index', 'create', 'show', 'destroy']);
     Route::resource('reportes', ReporteController::class);
+    Route::get('/analytics', function () {
+    return view('analytics');
+})->middleware(['auth'])->name('analytics.index');
 });
 
 require __DIR__.'/auth.php';
