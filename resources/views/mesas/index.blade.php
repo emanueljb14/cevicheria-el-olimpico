@@ -1,110 +1,220 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="text-xl font-bold text-sky-800">Gestión de Mesas</h2>
-            <a href="{{ route('mesas.create') }}"
-               class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-                + Nueva Mesa
-            </a>
+@extends('layouts.app')
+
+@section('title', 'Gestión de Mesas')
+@section('page-title', 'Mesas')
+
+@push('styles')
+<style>
+    .mesas-page { --navy:#062b3d; --sea:#00a7a7; --gold:#f6c453; --gold-dark:#e0b043; --paper:#fff; --muted:#68757d; --line:#dfe9eb; color:#18242b; }
+    .mesas-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:24px; }
+    .mesas-kicker { display:block; margin-bottom:7px; color:var(--sea); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    .mesas-header h1 { margin:0 0 7px; color:var(--navy); font:700 clamp(30px,4vw,43px)/1.08 'Playfair Display',serif; }
+    .mesas-header p { margin:0; color:var(--muted); }
+    .primary-button { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 18px; border-radius:999px; color:var(--navy); background:var(--gold); box-shadow:0 10px 22px rgba(246,196,83,.24); font-size:13px; font-weight:800; text-decoration:none; transition:.2s; }
+    .primary-button:hover { color:var(--navy); background:var(--gold-dark); transform:translateY(-2px); }
+
+    .flash { display:flex; gap:10px; margin-bottom:20px; padding:14px 16px; border-radius:13px; font-size:13px; }
+    .flash-success { border:1px solid #a7e5d2; color:#087451; background:#effdf8; }
+    .flash-info { border:1px solid #b8e4ea; color:#0b5875; background:#effcfd; }
+    
+    .mesa-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px; }
+    .stat-card { position:relative; overflow:hidden; padding:20px; border:1px solid var(--line); border-radius:18px; background:var(--paper); box-shadow:0 10px 28px rgba(6,43,61,.06); }
+    .stat-icon { display:grid; width:41px; height:41px; margin-bottom:12px; place-items:center; border-radius:13px; color:var(--sea); background:#e7f7f7; }
+    .stat-card small { display:block; margin-bottom:5px; color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .stat-card strong { color:var(--navy); font-size:22px; }
+
+    .history-card { overflow:hidden; border:1px solid var(--line); border-radius:20px; background:var(--paper); box-shadow:0 12px 32px rgba(6,43,61,.07); }
+    .history-toolbar { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:19px 21px; border-bottom:1px solid var(--line); }
+    .history-toolbar h2 { margin:0; color:var(--navy); font:700 20px 'Playfair Display',serif; }
+    .record-count { display:inline-block; margin-left:7px; padding:4px 9px; border-radius:999px; color:#087b7b; background:#e7f7f7; font:700 11px 'DM Sans',sans-serif; vertical-align:middle; }
+    .search-box { position:relative; width:min(100%,320px); }
+    .search-box i { position:absolute; top:50%; left:14px; color:#8a9ba0; transform:translateY(-50%); }
+    .search-box input { width:100%; height:41px; padding:0 14px 0 40px; border:1px solid #cfdddf; border-radius:999px; outline:none; font-size:13px; }
+    .search-box input:focus { border-color:var(--sea); box-shadow:0 0 0 3px rgba(0,167,167,.1); }
+
+    .table-scroll { overflow-x:auto; }
+    .mesas-table { width:100%; min-width:800px; border-collapse:collapse; }
+    .mesas-table th { padding:13px 16px; color:#718187; background:#f7fafb; font-size:10px; font-weight:800; letter-spacing:.08em; text-align:left; text-transform:uppercase; white-space:nowrap; }
+    .mesas-table td { padding:15px 16px; border-top:1px solid #ebf0f1; color:#3e4d53; font-size:13px; vertical-align:middle; }
+    .mesas-table tbody tr:hover { background:#fbfdfd; }
+    
+    .mesa-info { display:flex; align-items:center; gap:12px; }
+    .mesa-icon-box { width:40px; height:40px; border-radius:10px; display:grid; place-items:center; background:#e7f7f7; color:var(--sea); border:1px solid var(--line); font-size:16px; }
+    .main-data { display:block; color:var(--navy); font-weight:700; }
+    .sub-data { display:block; margin-top:2px; color:#89979c; font-size:11px; }
+
+    .capacity-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#0b5875; background:#e8f6f8; white-space:nowrap; }
+    .status-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:999px; font-size:11px; font-weight:700; }
+    .status-disponible { color:#087451; background:#effdf8; border:1px solid #a7e5d2; }
+    .status-ocupada { color:#a32a2a; background:#fdf2f2; border:1px solid #f8c4c4; }
+    .status-reservada { color:#8a6200; background:#fffdf0; border:1px solid #fce2a6; }
+
+    .actions { display:flex; gap:7px; }
+    .action-button { display:grid; width:34px; height:34px; place-items:center; border:1px solid var(--line); border-radius:10px; color:var(--navy); background:white; cursor:pointer; text-decoration:none; transition:.15s; }
+    .action-button:hover { color:white; border-color:var(--sea); background:var(--sea); }
+    .edit-button:hover { border-color:var(--gold-dark); background:var(--gold-dark); color:var(--navy); }
+    .delete-button { color:#b53b35; }
+    .delete-button:hover { border-color:#b53b35; background:#b53b35; color:white; }
+    
+    .empty-state { padding:55px 20px !important; text-align:center; }
+    .empty-state i { display:grid; width:62px; height:62px; margin:0 auto 13px; place-items:center; border-radius:50%; color:var(--sea); background:#e7f7f7; font-size:24px; }
+    .empty-state strong { display:block; margin-bottom:5px; color:var(--navy); font-size:16px; }
+    .empty-state span { color:var(--muted); }
+
+    body.dark-mode .mesas-page { --paper:#0b3447; --line:#28505f; color:#eaf3f5; }
+    body.dark-mode .mesas-header h1, body.dark-mode .stat-card strong, body.dark-mode .history-toolbar h2,
+    body.dark-mode .main-data, body.dark-mode .empty-state strong { color:#fff; }
+    body.dark-mode .mesas-table th { color:#b9cbd0; background:#082838; }
+    body.dark-mode .mesas-table td { border-color:#264b5a; color:#d9e5e8; }
+    body.dark-mode .mesas-table tbody tr:hover { background:#0e3a4e; }
+    body.dark-mode .action-button, body.dark-mode .search-box input { color:#e7f1f3; border-color:#315565; background:#0d3a4d; }
+
+    @media(max-width:800px) { .mesa-stats{grid-template-columns:1fr} }
+    @media(max-width:650px) { .mesas-header,.history-toolbar{align-items:stretch;flex-direction:column}.primary-button,.search-box{width:100%}.stat-card{padding:16px}.stat-card strong{font-size:18px} }
+</style>
+@endpush
+
+@section('content')
+@php
+    $totalMesas = $mesas->count();
+    $disponibles = $mesas->where('estado', 'disponible')->count();
+    $ocupadas = $mesas->where('estado', 'ocupada')->count();
+    $reservadas = $mesas->where('estado', 'reservada')->count();
+@endphp
+
+<div class="mesas-page">
+    <header class="mesas-header">
+        <div>
+            <span class="mesas-kicker">Gestión de Salón</span>
+            <h1>Mesas del Establecimiento</h1>
+            <p>Administra las mesas disponibles, su capacidad y su ubicación en el salón.</p>
         </div>
-    </x-slot>
+        <a class="primary-button" href="{{ route('mesas.create') }}">
+            <i class="fa-solid fa-plus"></i> Nueva mesa
+        </a>
+    </header>
 
-    <div class="py-6 px-4 max-w-7xl mx-auto">
+    @if(session('success'))
+        <div class="flash flash-success"><i class="fa-solid fa-circle-check"></i><span>{{ session('success') }}</span></div>
+    @endif
+    @if(session('info'))
+        <div class="flash flash-info"><i class="fa-solid fa-circle-info"></i><span>{{ session('info') }}</span></div>
+    @endif
 
-        @if(session('success'))
-            <div class="mb-4 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-lg">
-                ✅ {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
-                ❌ {{ session('error') }}
-            </div>
-        @endif
+    <section class="mesa-stats">
+        <article class="stat-card">
+            <span class="stat-icon"><i class="fa-solid fa-chair"></i></span>
+            <small>Total mesas</small>
+            <strong>{{ $totalMesas }}</strong>
+        </article>
+        <article class="stat-card">
+            <span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span>
+            <small>Disponibles</small>
+            <strong>{{ $disponibles }}</strong>
+        </article>
+        <article class="stat-card">
+            <span class="stat-icon"><i class="fa-solid fa-users-between-lines"></i></span>
+            <small>Ocupadas / Reservadas</small>
+            <strong>{{ $ocupadas + $reservadas }}</strong>
+        </article>
+    </section>
 
-        {{-- RESUMEN DE ESTADOS --}}
-        <div class="grid grid-cols-3 gap-4 mb-6">
-            <div class="bg-white border border-sky-100 rounded-xl p-4 text-center shadow-sm">
-                <p class="text-3xl font-bold text-green-600">{{ $mesas->where('estado','libre')->count() }}</p>
-                <p class="text-sm text-gray-500 mt-1">Libres</p>
-            </div>
-            <div class="bg-white border border-sky-100 rounded-xl p-4 text-center shadow-sm">
-                <p class="text-3xl font-bold text-red-500">{{ $mesas->where('estado','ocupada')->count() }}</p>
-                <p class="text-sm text-gray-500 mt-1">Ocupadas</p>
-            </div>
-            <div class="bg-white border border-sky-100 rounded-xl p-4 text-center shadow-sm">
-                <p class="text-3xl font-bold text-yellow-500">{{ $mesas->where('estado','reservada')->count() }}</p>
-                <p class="text-sm text-gray-500 mt-1">Reservadas</p>
-            </div>
+    <section class="history-card">
+        <div class="history-toolbar">
+            <h2>Mesas registradas <span class="record-count">{{ $totalMesas }}</span></h2>
+            <label class="search-box" for="mesaSearch">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="mesaSearch" type="search" placeholder="Buscar mesa o ubicación...">
+            </label>
         </div>
 
-        {{-- TABLA --}}
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-sky-100">
-            <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
-                <h3 class="text-sky-700 font-semibold">Lista de Mesas</h3>
-            </div>
-            <table class="min-w-full divide-y divide-sky-100">
-                <thead class="bg-sky-100">
+        <div class="table-scroll">
+            <table class="mesas-table">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-sky-700 uppercase">#</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-sky-700 uppercase">Número</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-sky-700 uppercase">Capacidad</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-sky-700 uppercase">Estado</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-sky-700 uppercase">Cambiar Estado</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-sky-700 uppercase">Acciones</th>
+                        <th>Mesa</th>
+                        <th>Capacidad</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
+                <tbody>
                     @forelse($mesas as $mesa)
-                    <tr class="hover:bg-sky-50 transition">
-                        <td class="px-6 py-4 text-gray-400 text-sm">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4 font-bold text-gray-800">Mesa {{ $mesa->numero }}</td>
-                        <td class="px-6 py-4 text-gray-600">{{ $mesa->capacidad }} personas</td>
-                        <td class="px-6 py-4">
-                            @if($mesa->estado === 'libre')
-                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">🟢 Libre</span>
-                            @elseif($mesa->estado === 'ocupada')
-                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">🔴 Ocupada</span>
-                            @else
-                                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">🟡 Reservada</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            <form action="{{ route('mesas.cambiar-estado', $mesa) }}" method="POST" class="flex gap-2 items-center">
-                                @csrf @method('PATCH')
-                                <select name="estado" class="text-xs border border-sky-200 rounded-lg px-2 py-1 text-gray-700">
-                                    <option value="libre"     @selected($mesa->estado === 'libre')>Libre</option>
-                                    <option value="ocupada"   @selected($mesa->estado === 'ocupada')>Ocupada</option>
-                                    <option value="reservada" @selected($mesa->estado === 'reservada')>Reservada</option>
-                                </select>
-                                <button type="submit" class="bg-sky-100 hover:bg-sky-200 text-sky-700 text-xs px-2 py-1 rounded-lg transition">
-                                    Aplicar
-                                </button>
-                            </form>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex gap-3">
-                                <a href="{{ route('mesas.show', $mesa) }}"
-                                   class="text-sky-600 hover:text-sky-800 text-sm font-medium">Ver</a>
-                                <a href="{{ route('mesas.edit', $mesa) }}"
-                                   class="text-yellow-600 hover:text-yellow-800 text-sm font-medium">Editar</a>
-                                <form action="{{ route('mesas.destroy', $mesa) }}" method="POST"
-                                      onsubmit="return confirm('¿Eliminar la Mesa {{ $mesa->numero }}?')">
-                                    @csrf @method('DELETE')
-                                    <button class="text-red-500 hover:text-red-700 text-sm font-medium">Eliminar</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr class="mesa-row">
+                            <td>
+                                <div class="mesa-info">
+                                    <div class="mesa-icon-box">
+                                        <i class="fa-solid fa-chair"></i>
+                                    </div>
+                                    <div>
+                                        <span class="main-data">Mesa #{{ $mesa->numero }}</span>
+                                        <span class="sub-data">ID Registro: #{{ $mesa->id }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="capacity-badge">
+                                    <i class="fa-solid fa-users"></i>
+                                    {{ $mesa->capacidad }} Personas
+                                </span>
+                            </td>
+                            <td>
+                                <span class="main-data" style="font-weight: 500;">{{ $mesa->ubicacion ?? 'Salón Principal' }}</span>
+                            </td>
+                            <td>
+                                @if($mesa->estado === 'disponible')
+                                    <span class="status-badge status-disponible"><i class="fa-solid fa-circle"></i> Disponible</span>
+                                @elseif($mesa->estado === 'ocupada')
+                                    <span class="status-badge status-ocupada"><i class="fa-solid fa-circle"></i> Ocupada</span>
+                                @else
+                                    <span class="status-badge status-reservada"><i class="fa-solid fa-circle"></i> Reservada</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <a class="action-button" href="{{ route('mesas.show', $mesa) }}" title="Ver detalles">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </a>
+                                    <a class="action-button edit-button" href="{{ route('mesas.edit', $mesa) }}" title="Editar mesa">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <form method="POST" action="{{ route('mesas.destroy', $mesa) }}" onsubmit="return confirm('¿Eliminar esta mesa?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="action-button delete-button" type="submit" title="Eliminar mesa">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-10 text-center text-gray-400">
-                            No hay mesas registradas aún.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="empty-state" colspan="5">
+                                <i class="fa-solid fa-chair"></i>
+                                <strong>No existen mesas registradas</strong>
+                                <span>Crea la primera mesa para gestionar la atención en salón.</span>
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-    </div>
-</x-app-layout>
+    </section>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    const mesaSearch = document.getElementById('mesaSearch');
+    const mesaRows = document.querySelectorAll('.mesa-row');
+    
+    mesaSearch?.addEventListener('input', event => {
+        const term = event.target.value.toLowerCase().trim();
+        mesaRows.forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+    });
+</script>
+@endpush
