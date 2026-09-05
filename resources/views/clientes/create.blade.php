@@ -83,24 +83,46 @@
                     @enderror
                 </div>
 
-                {{-- Teléfono --}}
+                {{-- Teléfono (9 dígitos numéricos estrictos) --}}
                 <div class="form-group">
                     <label for="telefono">Teléfono / Celular</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="text" id="telefono" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}" placeholder="Ej. 987654321">
+                        <input 
+                            type="tel" 
+                            id="telefono" 
+                            name="telefono" 
+                            class="form-control @error('telefono') is-invalid @enderror" 
+                            value="{{ old('telefono') }}" 
+                            placeholder="Ej. 987654321"
+                            maxlength="9"
+                            pattern="[0-9]{9}"
+                            inputmode="numeric"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9)"
+                            title="Debe ingresar exactamente 9 dígitos numéricos"
+                        >
                     </div>
                     @error('telefono')
                         <span class="error-text">{{ $message }}</span>
                     @enderror
                 </div>
 
-                {{-- Correo Electrónico --}}
+                {{-- Correo Electrónico (Obligatorio, con @ y terminado en .com) --}}
                 <div class="form-group">
-                    <label for="email">Correo electrónico</label>
+                    <label for="email">Correo electrónico *</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="cliente@correo.com">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-control @error('email') is-invalid @enderror" 
+                            value="{{ old('email') }}" 
+                            placeholder="cliente@correo.com"
+                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$"
+                            title="El correo es obligatorio, debe incluir '@' y terminar obligatoriamente en '.com'"
+                            required
+                        >
                     </div>
                     @error('email')
                         <span class="error-text">{{ $message }}</span>
