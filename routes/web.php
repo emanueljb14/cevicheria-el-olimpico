@@ -10,6 +10,7 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\CierreCajaController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,9 +43,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('pedidos/{pedido}/cambiar-estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado'); // Cambiado a camelCase
     Route::resource('detalle_pedidos', DetallePedidoController::class)->except(['create', 'edit']); // Cambiado guion por guion bajo
 
+
     // Inventario y ajuste de stock
     Route::resource('inventario', InventarioController::class);
     Route::patch('inventario/{inventario}/actualizar-stock', [InventarioController::class, 'actualizarStock'])->name('inventario.actualizar-stock');
+    Route::middleware(['auth'])->group(function () {
+    Route::resource('cierre-caja', CierreCajaController::class);
+});
+    
 
     // Transacciones y Analítica
     Route::resource('pagos', PagoController::class)->except(['edit']);

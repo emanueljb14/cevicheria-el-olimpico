@@ -85,7 +85,6 @@ class ProductoController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('imagen')) {
-            // Elimina la imagen anterior si existe
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
             }
