@@ -2,182 +2,344 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ==========================================================================
-   Estilos para la Vista de Pedidos (resources/css/pedidos.css)
-   ========================================================================== */
-
-/* Contenedor Principal */
-.pedidos-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+/* ===================================================
+   1. VARIABLES Y TEMA GENERAL DE EL OLÍMPICO
+   =================================================== */
+:root {
+    --olimpico-primary: #00a7a7;
+    --olimpico-secondary: #0b5875;
+    --olimpico-accent: #f6c453;
+    --olimpico-soft: #e7f7f7;
+    --olimpico-bg: #f4f7f8;
+    --olimpico-card: #ffffff;
+    --olimpico-text: #18242b;
+    --olimpico-muted: #68757d;
+    --olimpico-border: #d8e4e8;
+    --sidebar-width: 270px;
 }
 
-/* Encabezado */
+* { 
+    box-sizing: border-box; 
+}
+
+/* Modo Claro (Normal por defecto) */
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--olimpico-text);
+    background: linear-gradient(135deg, #edf5f6 0%, #f8fbfb 48%, #ffffff 100%);
+    font-family: 'DM Sans', sans-serif;
+    transition: background .25s ease, color .25s ease;
+}
+
+/* Modo Oscuro (Se activa mediante botón/switch) */
+body.dark-mode {
+    --olimpico-bg: #031b27;
+    --olimpico-card: #0b3447;
+    --olimpico-text: #edf7f8;
+    --olimpico-muted: #aebfc5;
+    --olimpico-border: #1e4962;
+    color: var(--olimpico-text);
+    background: linear-gradient(135deg, #031b27 0%, #062b3d 60%, #0b5875 100%);
+}
+
+/* ===================================================
+   2. SIDEBAR Y NAVEGACIÓN
+   =================================================== */
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1040;
+    display: flex;
+    width: var(--sidebar-width);
+    height: 100vh;
+    flex-direction: column;
+    overflow-y: auto;
+    color: #fff;
+    background: linear-gradient(180deg, #031b27 0%, #062b3d 58%, #0b5875 100%);
+    box-shadow: 12px 0 35px rgba(3, 27, 39, .22);
+    transition: transform .25s ease;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 25px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, .18);
+}
+
+.brand-logo {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    place-items: center;
+    border-radius: 50%;
+    color: #062b3d;
+    background: var(--olimpico-accent);
+    font-size: 24px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+.brand strong { display: block; line-height: 1.15; font-family: 'Playfair Display', serif; font-size: 19px; }
+.brand small { color: rgba(255, 255, 255, .72); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+
+.menu-label {
+    margin: 20px 22px 8px;
+    color: rgba(255, 255, 255, .58);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.sidebar-menu { flex: 1; padding-bottom: 16px; }
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 12px;
+    padding: 11px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, .88);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .18s ease;
+}
+
+.sidebar-link i { width: 21px; text-align: center; font-size: 15px; }
+.sidebar-link:hover { color: var(--olimpico-accent); background: rgba(255, 255, 255, .10); transform: translateX(3px); }
+.sidebar-link.active { color: #062b3d; background: var(--olimpico-accent); box-shadow: 0 8px 22px rgba(0, 0, 0, .18); }
+
+.sidebar-footer { padding: 14px 12px 18px; border-top: 1px solid rgba(255, 255, 255, .16); }
+.theme-row, .user-card { border: 1px solid rgba(255, 255, 255, .14); border-radius: 13px; background: rgba(255, 255, 255, .11); }
+.theme-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding: 10px 12px; font-size: 12px; }
+.user-card { display: flex; align-items: center; gap: 10px; padding: 11px; }
+.avatar { display: grid; width: 39px; height: 39px; flex: 0 0 39px; place-items: center; border-radius: 50%; color: #062b3d; background: var(--olimpico-accent); font-weight: 800; }
+.user-info { min-width: 0; flex: 1; }
+.user-info strong, .user-info small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-info strong { font-size: 12px; }
+.user-info small { color: rgba(255, 255, 255, .7); font-size: 10px; }
+
+.logout-button { padding: 6px; border: 0; color: rgba(255, 255, 255, .8); background: transparent; cursor: pointer; }
+.logout-button:hover { color: #fff; }
+
+.page-shell { min-height: 100vh; margin-left: var(--sidebar-width); }
+.topbar-layout {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    min-height: 72px;
+    padding: 13px clamp(18px, 3vw, 38px);
+    border-bottom: 1px solid var(--olimpico-border);
+    background: rgba(255, 255, 255, .88);
+    backdrop-filter: blur(15px);
+}
+
+body.dark-mode .topbar-layout {
+    background: rgba(6, 43, 61, .94);
+    border-color: #26414d;
+}
+
+.topbar-title strong { display: block; color: #062b3d; font-family: 'Playfair Display', serif; font-size: 20px; }
+body.dark-mode .topbar-title strong { color: #fff; }
+
+.topbar-title small { color: var(--olimpico-muted); font-size: 12px; }
+.topbar-actions { display: flex; align-items: center; gap: 9px; }
+.circle-button { display: grid; width: 39px; height: 39px; place-items: center; border: 1px solid #ead39a; border-radius: 50%; color: #062b3d; background: #fff7df; cursor: pointer; }
+body.dark-mode .circle-button { border-color: var(--olimpico-border); color: var(--olimpico-accent); background: var(--olimpico-card); }
+
+.mobile-toggle { display: none; }
+.page-content { padding: clamp(18px, 3vw, 38px); }
+.sidebar-overlay { position: fixed; inset: 0; z-index: 1030; display: none; background: rgba(8, 47, 73, .48); backdrop-filter: blur(2px); }
+
+@media (max-width: 991px) {
+    .sidebar { transform: translateX(-105%); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.show { display: block; }
+    .page-shell { margin-left: 0; }
+    .mobile-toggle { display: grid; }
+}
+
+@media (max-width: 575px) {
+    .topbar-layout { min-height: 64px; padding: 11px 15px; }
+    .topbar-title small { display: none; }
+    .page-content { padding: 15px; }
+}
+
+/* ===================================================
+   3. ESTILOS COMPONENTES (PEDIDOS Y TABLAS)
+   =================================================== */
+.pedidos-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
 .pedidos-header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 1.5rem;
-    gap: 1rem;
-}
-
-@media (min-width: 768px) {
-    .pedidos-header {
-        flex-direction: row;
-        align-items: center;
-    }
 }
 
 .pedidos-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1f2937;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--olimpico-text);
     margin: 0;
 }
 
 .pedidos-subtitle {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--olimpico-muted);
     margin-top: 0.25rem;
 }
 
-/* Botones */
-.btn-primary {
-    background-color: #2563eb;
+.card-panel {
+    background-color: var(--olimpico-card);
+    border-radius: 0.75rem;
+    border: 1px solid var(--olimpico-border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.grid-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--olimpico-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-value {
+    margin-top: 0.35rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--olimpico-text);
+}
+
+.badge-estado {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    background-color: var(--olimpico-accent);
+    color: #062b3d;
+}
+
+/* Formulario */
+.form-agregar-item {
+    display: grid;
+    grid-template-columns: 3fr 1fr auto;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.btn-azul {
+    background-color: var(--olimpico-primary);
     color: #ffffff;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 0.6rem 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    height: 42px;
+    white-space: nowrap;
+}
+
+.btn-azul:hover {
+    background-color: var(--olimpico-secondary);
+}
+
+.btn-volver {
+    background-color: var(--olimpico-secondary);
+    color: #ffffff;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background-color 0.2s ease;
-    border: none;
-    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
-.btn-primary:hover {
-    background-color: #1d4ed8;
-}
-
-.btn-link-action {
-    color: #2563eb;
-    font-weight: 600;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-link-action:hover {
-    text-decoration: underline;
-}
-
-.btn-link-danger {
-    color: #dc2626;
-    font-weight: 600;
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-left: 0.5rem;
-}
-
-.btn-link-danger:hover {
-    text-decoration: underline;
-}
-
-/* Alertas */
-.alert-success {
-    background-color: #d1fae5;
-    border-left: 4px solid #10b981;
-    color: #065f46;
-    padding: 1rem;
-    border-radius: 0.375rem;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.btn-close {
-    background: none;
-    border: none;
-    font-weight: bold;
-    color: inherit;
-    cursor: pointer;
-    font-size: 1.25rem;
-}
-
-/* Tabla y Tarjeta */
-.table-card {
-    background-color: #ffffff;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.table-responsive {
+/* Tablas */
+.table-container {
     overflow-x: auto;
+    border-radius: 0.75rem;
+    border: 1px solid var(--olimpico-border);
+    background-color: var(--olimpico-card);
 }
 
 .pedidos-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
+    font-size: 0.875rem;
 }
 
 .pedidos-table th {
-    background-color: #f9fafb;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #6b7280;
+    background-color: var(--olimpico-soft);
+    border-bottom: 1px solid var(--olimpico-border);
+    color: var(--olimpico-secondary);
+    padding: 0.875rem 1rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.75rem;
+}
+
+body.dark-mode .pedidos-table th {
+    background-color: rgba(11, 88, 117, 0.4);
+    color: var(--olimpico-primary);
 }
 
 .pedidos-table td {
-    padding: 1rem 1.5rem;
-    font-size: 0.875rem;
-    color: #374151;
-    border-bottom: 1px solid #e5e7eb;
-    white-space: nowrap;
+    padding: 1rem;
+    border-bottom: 1px solid var(--olimpico-border);
+    color: var(--olimpico-text);
 }
 
-.pedidos-table tr:hover {
-    background-color: #f9fafb;
-}
-
-/* Badges e Insignias */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.25rem 0.625rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.badge-local { background-color: #f3e8ff; color: #6b21a8; }
-.badge-recojo { background-color: #dbeafe; color: #1e40af; }
-.badge-delivery { background-color: #fef3c7; color: #92400e; }
-
-/* Select de Estado Dinámico */
-.status-select {
-    font-size: 0.75rem;
+/* Inputs y Selects */
+.input-cantidad, .select-estado {
+    background-color: #ffffff;
+    color: #18242b;
+    border: 1px solid var(--olimpico-border);
+    border-radius: 0.375rem;
+    padding: 0.35rem;
     font-weight: 600;
-    border-radius: 9999px;
-    padding: 0.25rem 0.75rem;
-    border: none;
-    cursor: pointer;
-    outline: none;
 }
 
-.status-pendiente { background-color: #fef3c7; color: #92400e; }
-.status-en_proceso { background-color: #dbeafe; color: #1e40af; }
-.status-completado { background-color: #d1fae5; color: #065f46; }
-.status-cancelado { background-color: #fee2e2; color: #991b1b; }
+body.dark-mode .input-cantidad, 
+body.dark-mode .select-estado {
+    background-color: #062b3d;
+    color: #ffffff;
+}
+
+.input-cantidad {
+    width: 65px;
+    text-align: center;
+}
+
+.btn-quitar {
+    background: none;
+    border: none;
+    color: #dc2626;
+    font-weight: 600;
+    cursor: pointer;
+}
