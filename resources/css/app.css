@@ -32,7 +32,7 @@ body {
     transition: background .25s ease, color .25s ease;
 }
 
-/* Modo Oscuro (Se activa mediante botón/switch) */
+/* Modo Oscuro */
 body.dark-mode {
     --olimpico-bg: #031b27;
     --olimpico-card: #0b3447;
@@ -179,7 +179,8 @@ body.dark-mode .circle-button { border-color: var(--olimpico-border); color: var
    3. ESTILOS COMPONENTES (PEDIDOS Y TABLAS)
    =================================================== */
 .pedidos-container {
-    max-width: 1100px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -188,6 +189,7 @@ body.dark-mode .circle-button { border-color: var(--olimpico-border); color: var
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
 .pedidos-title {
@@ -198,7 +200,7 @@ body.dark-mode .circle-button { border-color: var(--olimpico-border); color: var
 }
 
 .pedidos-subtitle {
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     color: var(--olimpico-muted);
     margin-top: 0.25rem;
 }
@@ -252,56 +254,39 @@ body.dark-mode .circle-button { border-color: var(--olimpico-border); color: var
     align-items: flex-end;
 }
 
-.btn-azul {
-    background-color: var(--olimpico-primary);
-    color: #ffffff;
-    font-weight: 600;
-    padding: 0.6rem 1.25rem;
-    border-radius: 0.5rem;
-    border: none;
-    font-size: 0.875rem;
-    cursor: pointer;
-    height: 42px;
-    white-space: nowrap;
+@media (max-width: 640px) {
+    .form-agregar-item {
+        grid-template-columns: 1fr;
+    }
 }
 
-.btn-azul:hover {
-    background-color: var(--olimpico-secondary);
-}
-
-.btn-volver {
-    background-color: var(--olimpico-secondary);
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-/* Tablas */
+/* Tablas con scroll suave en pantallas pequeñas */
 .table-container {
+    width: 100%;
     overflow-x: auto;
     border-radius: 0.75rem;
     border: 1px solid var(--olimpico-border);
     background-color: var(--olimpico-card);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .pedidos-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    font-size: 0.875rem;
+    font-size: 0.95rem;
 }
 
 .pedidos-table th {
     background-color: var(--olimpico-soft);
-    border-bottom: 1px solid var(--olimpico-border);
+    border-bottom: 2px solid var(--olimpico-border);
     color: var(--olimpico-secondary);
-    padding: 0.875rem 1rem;
-    font-weight: 700;
+    padding: 1rem 1.2rem;
+    font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
 }
 
 body.dark-mode .pedidos-table th {
@@ -310,36 +295,270 @@ body.dark-mode .pedidos-table th {
 }
 
 .pedidos-table td {
-    padding: 1rem;
+    padding: 1.1rem 1.2rem;
     border-bottom: 1px solid var(--olimpico-border);
     color: var(--olimpico-text);
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+/* Primera columna (ID) resaltada */
+.pedidos-table td:first-child {
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+/* Forzado de precio en una sola línea */
+.pedidos-table td:nth-child(5) {
+    white-space: nowrap;
 }
 
 /* Inputs y Selects */
-.input-cantidad, .select-estado {
+.input-cantidad {
     background-color: #ffffff;
     color: #18242b;
     border: 1px solid var(--olimpico-border);
     border-radius: 0.375rem;
     padding: 0.35rem;
     font-weight: 600;
-}
-
-body.dark-mode .input-cantidad, 
-body.dark-mode .select-estado {
-    background-color: #062b3d;
-    color: #ffffff;
-}
-
-.input-cantidad {
     width: 65px;
     text-align: center;
 }
 
-.btn-quitar {
-    background: none;
-    border: none;
-    color: #dc2626;
+/* Selector de Estado corregido (Flecha con margen adecuado) */
+.select-estado {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23374151' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    padding: 6px 30px 6px 12px !important; /* El padding derecho evita el choque con la flecha */
+    border: 1px solid var(--olimpico-border);
+    border-radius: 6px;
+    font-size: 0.875rem;
     font-weight: 600;
+    color: #18242b;
     cursor: pointer;
+    min-width: 130px;
+    box-sizing: border-box;
+}
+
+body.dark-mode .input-cantidad {
+    background-color: #062b3d;
+    color: #ffffff;
+}
+
+body.dark-mode .select-estado {
+    background-color: #062b3d;
+    color: #ffffff;
+    border-color: #1e4962;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23edf7f8' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+}
+
+/* ===================================================
+   4. ESTILOS DE BOTONES MEJORADOS Y UNIFICADOS
+   =================================================== */
+
+/* Contenedor de acciones en tablas */
+.btn-acciones-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+/* Botón VER (Azul/Turquesa) */
+.btn-ver-tabla {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--olimpico-primary);
+    border: 1px solid var(--olimpico-primary);
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 167, 167, 0.2);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-ver-tabla:hover {
+    background-color: var(--olimpico-secondary);
+    border-color: var(--olimpico-secondary);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(11, 88, 117, 0.3);
+}
+
+/* Botón ELIMINAR / QUITAR (Rojo) */
+.btn-eliminar-tabla, .btn-quitar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #ef4444;
+    border: 1px solid #ef4444;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-eliminar-tabla:hover, .btn-quitar:hover {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(185, 28, 28, 0.3);
+}
+
+/* Botón AGREGAR ÍTEM / AZUL GENERAL */
+.btn-azul {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--olimpico-primary);
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.6rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--olimpico-primary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    height: 42px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 167, 167, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-azul:hover {
+    background-color: var(--olimpico-secondary);
+    border-color: var(--olimpico-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(11, 88, 117, 0.3);
+}
+
+/* Botón VOLVER / SECUNDARIO */
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: var(--olimpico-secondary);
+    border: 1px solid var(--olimpico-border);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.btn-volver:hover {
+    background-color: var(--olimpico-soft);
+    border-color: var(--olimpico-primary);
+    color: var(--olimpico-primary);
+    transform: translateY(-1px);
+}
+
+/* Botón NUEVO PEDIDO (Amarillo Acento) */
+.btn-nuevo-pedido {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--olimpico-accent);
+    color: #062b3d;
+    font-weight: 700;
+    padding: 0.6rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ebd076;
+    text-decoration: none;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 6px rgba(246, 196, 83, 0.3);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-nuevo-pedido:hover {
+    background-color: #e5b33d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(246, 196, 83, 0.4);
+}
+
+/* Ajustes para Modo Oscuro en Botones */
+body.dark-mode .btn-volver {
+    background-color: #0b3447;
+    color: #edf7f8;
+    border-color: #1e4962;
+}
+
+body.dark-mode .btn-volver:hover {
+    background-color: #0b5875;
+    color: #ffffff;
+}
+
+/* ===================================================
+   5. COLORES DINÁMICOS PARA ESTADOS DEL PEDIDO
+   =================================================== */
+
+/* Estado: Pendiente (Amarillo / Naranja suave) */
+.select-estado.status-pendiente {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border-color: #fcd34d !important;
+}
+
+/* Estado: En Proceso (Azul) */
+.select-estado.status-en_proceso {
+    background-color: #dbeafe !important;
+    color: #1e40af !important;
+    border-color: #93c5fd !important;
+}
+
+/* Estado: Completado (Verde) */
+.select-estado.status-completado {
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
+    border-color: #86efac !important;
+}
+
+/* Estado: Cancelado (Rojo) */
+.select-estado.status-cancelado {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+    border-color: #fca5a5 !important;
+}
+
+/* Opciones desplegables (Modo Claro genérico dentro del menú) */
+.select-estado option {
+    background-color: #ffffff;
+    color: #18242b;
+}
+
+/* Ajustes para Modo Oscuro en los desplegables */
+body.dark-mode .select-estado option {
+    background-color: #062b3d;
+    color: #ffffff;
+}
+
+/* Alineación y formato para la columna de Fecha */
+.pedidos-table td.col-fecha {
+    white-space: nowrap;
+    font-size: 0.9rem;
+    color: var(--olimpico-muted);
+    font-weight: 600;
 }

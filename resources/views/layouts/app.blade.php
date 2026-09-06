@@ -17,8 +17,6 @@
     <!-- CSS Centralizado de la App (Va DESPUÉS para sobreescribir estilos por defecto) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<<<<<<< HEAD
-=======
     <style>
         :root {
             --olimpico-primary: #00a7a7;
