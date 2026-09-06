@@ -14,13 +14,21 @@ class Mesa extends Model
     protected $fillable = [
         'numero',
         'capacidad',
+        'ubicacion',
         'estado',
+    ];
+
+    /**
+     * Casteo de atributos para garantizar tipos de datos correctos.
+     */
+    protected $casts = [
+        'capacidad' => 'integer',
     ];
 
     /* --- RELACIONES --- */
 
     /**
-     * Una mesa puede tener varios pedidos asociados.
+     * Una mesa tiene muchos pedidos.
      */
     public function pedidos()
     {

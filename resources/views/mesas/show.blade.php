@@ -24,15 +24,18 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 uppercase font-medium">Estado actual</p>
-                    <div class="mt-1">
-                        @if($mesa->estado === 'libre')
-                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">🟢 Libre</span>
-                        @elseif($mesa->estado === 'ocupada')
-                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold">🔴 Ocupada</span>
-                        @else
-                            <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold">🟡 Reservada</span>
-                        @endif
-                    </div>
+                    {{-- ESTADO ACTUAL --}}
+<div class="mt-1">
+    @if($mesa->estado === 'disponible')
+        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">🟢 Disponible</span>
+    @elseif($mesa->estado === 'ocupada')
+        <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold">🔴 Ocupada</span>
+    @elseif($mesa->estado === 'reservada')
+        <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold">🟡 Reservada</span>
+    @else
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold">⚪ Mantenimiento</span>
+    @endif
+</div>
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 uppercase font-medium">Registrada</p>
@@ -46,10 +49,11 @@
                 <form action="{{ route('mesas.cambiar-estado', $mesa) }}" method="POST" class="flex gap-3 items-center">
                     @csrf @method('PATCH')
                     <select name="estado" class="border border-sky-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-400 focus:outline-none">
-                        <option value="libre"     @selected($mesa->estado === 'libre')>🟢 Libre</option>
-                        <option value="ocupada"   @selected($mesa->estado === 'ocupada')>🔴 Ocupada</option>
-                        <option value="reservada" @selected($mesa->estado === 'reservada')>🟡 Reservada</option>
-                    </select>
+    <option value="disponible" @selected($mesa->estado === 'disponible')>🟢 Disponible</option>
+    <option value="ocupada"    @selected($mesa->estado === 'ocupada')>🔴 Ocupada</option>
+    <option value="reservada"  @selected($mesa->estado === 'reservada')>🟡 Reservada</option>
+    <option value="mantenimiento" @selected($mesa->estado === 'mantenimiento')>⚪ Mantenimiento</option>
+</select>
                     <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
                         Aplicar
                     </button>

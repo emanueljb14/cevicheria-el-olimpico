@@ -83,15 +83,20 @@
 @endphp
 
 <div class="inventario-page">
+    @if(session('success'))
+    <div style="background:#e6f7f5; border:1px solid #00a7a7; color:#062b3d; padding:12px 18px; border-radius:12px; margin-bottom:20px; font-size:13px; font-weight:600;">
+        <i class="fa-solid fa-circle-check" style="color:#00a7a7; margin-right:8px;"></i> {{ session('success') }}
+    </div>
+@endif
     <header class="inventario-header">
         <div>
             <span class="inventario-kicker">Control de Stock</span>
             <h1>Inventario e Insumos</h1>
             <p>Controla las existencias, unidades de medida y alertas de stock crítico de insumos.</p>
         </div>
-        <a class="primary-button" href="{{ route('inventario.create') }}">
-            <i class="fa-solid fa-plus"></i> Nuevo insumo
-        </a>
+        <a href="{{ route('inventario.create') }}" class="primary-button" style="background:var(--gold); color:var(--navy); padding:10px 20px; border-radius:999px; text-decoration:none; font-weight:800; font-size:13px; display:inline-flex; align-items:center; gap:8px;">
+    <i class="fa-solid fa-plus"></i> Nuevo insumo
+</a>
     </header>
 
     @if(session('success'))

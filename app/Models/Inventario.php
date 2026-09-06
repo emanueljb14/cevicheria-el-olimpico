@@ -12,22 +12,24 @@ class Inventario extends Model
     protected $table = 'inventarios';
 
     protected $fillable = [
+        'producto_id',
         'nombre_insumo',
         'stock',
         'unidad_medida',
         'stock_minimo',
+        'precio_unitario',
+        'estado',
     ];
 
     protected $casts = [
-        'stock'        => 'decimal:2',
-        'stock_minimo' => 'decimal:2',
+        'stock'           => 'decimal:2',
+        'stock_minimo'    => 'decimal:2',
+        'precio_unitario' => 'decimal:2',
+        'estado'          => 'boolean',
     ];
 
-    /**
-     * Accessor para saber si el insumo está con stock crítico.
-     */
-    public function getBajoStockAttribute(): bool
+    public function producto()
     {
-        return $this->stock <= $this->stock_minimo;
+        return $this->belongsTo(Producto::class, 'producto_id');
     }
 }

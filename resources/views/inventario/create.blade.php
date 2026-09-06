@@ -1,83 +1,90 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('inventario.index') }}" class="text-sky-500 hover:text-sky-700">← Volver</a>
-            <h2 class="text-xl font-bold text-sky-800">Nuevo Insumo</h2>
-        </div>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-6 px-4 max-w-lg mx-auto">
-        <div class="bg-white rounded-xl shadow-sm border border-sky-100 overflow-hidden">
-            <div class="bg-sky-500 px-6 py-4">
-                <h3 class="text-white font-semibold text-lg">Registrar Insumo</h3>
-                <p class="text-sky-100 text-sm">Añade un nuevo insumo al inventario</p>
+@section('title', 'Nuevo Insumo')
+@section('page-title', 'Inventario')
+
+@push('styles')
+<style>
+    .inventario-page { --navy:#062b3d; --sea:#00a7a7; --gold:#f6c453; --gold-dark:#e0b043; --paper:#fff; --muted:#68757d; --line:#dfe9eb; color:#18242b; }
+    .inventario-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:24px; }
+    .inventario-kicker { display:block; margin-bottom:7px; color:var(--sea); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    .inventario-header h1 { margin:0 0 7px; color:var(--navy); font:700 clamp(26px,3vw,36px)/1.08 'Playfair Display',serif; }
+    .secondary-button { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border:1px solid var(--line); border-radius:999px; color:var(--navy); background:#fff; font-size:13px; font-weight:700; text-decoration:none; transition:.2s; }
+    .secondary-button:hover { background:#f4f8f9; transform:translateY(-1px); }
+
+    .form-card { max-width:580px; margin:0 auto; padding:28px; border:1px solid var(--line); border-radius:20px; background:var(--paper); box-shadow:0 12px 32px rgba(6,43,61,.07); }
+    .form-group { margin-bottom:20px; }
+    .form-label { display:block; margin-bottom:8px; color:var(--navy); font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .input-box { position:relative; display:flex; align-items:center; }
+    .input-box i { position:absolute; left:14px; color:#8a9ba0; }
+    .form-control { width:100%; height:44px; padding:0 14px 0 42px; border:1px solid #cfdddf; border-radius:12px; outline:none; font-size:13px; transition:.2s; background:#fff; box-sizing:border-box; }
+    .form-control:focus { border-color:var(--sea); box-shadow:0 0 0 3px rgba(0,167,167,.1); }
+
+    .submit-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; height:46px; border:none; border-radius:12px; color:var(--navy); background:var(--gold); font-size:14px; font-weight:800; cursor:pointer; transition:.2s; margin-top:10px; }
+    .submit-button:hover { background:var(--gold-dark); transform:translateY(-1px); }
+
+    body.dark-mode .form-card { background:#0b3447; border-color:#28505f; }
+    body.dark-mode .form-label { color:#fff; }
+    body.dark-mode .form-control { background:#0d3a4d; border-color:#315565; color:#fff; }
+</style>
+@endpush
+
+@section('content')
+<div class="inventario-page">
+    <header class="inventario-header">
+        <div>
+            <span class="inventario-kicker">Control de Stock</span>
+            <h1>Registrar Nuevo Insumo</h1>
+        </div>
+        <a class="secondary-button" href="{{ route('inventario.index') }}">
+            <i class="fa-solid fa-arrow-left"></i> Volver a la lista
+        </a>
+    </header>
+
+    <div class="form-card">
+        <form action="{{ route('inventario.store') }}" method="POST">
+            @csrf
+
+            <div class="form-group">
+                <label class="form-label" for="nombre">Nombre del Insumo *</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <input id="nombre" type="text" name="nombre" class="form-control" placeholder="Ej: Pescado Pota, Limón, Sal" value="{{ old('nombre') }}" required>
+                </div>
+                @error('nombre') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
             </div>
 
-            <form action="{{ route('inventario.store') }}" method="POST" class="p-6 space-y-5">
-                @csrf
-
-                {{-- Nombre del insumo --}}
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del Insumo <span class="text-red-500">*</span></label>
-                    <input type="text" name="nombre_insumo" value="{{ old('nombre_insumo') }}"
-                           class="w-full border border-sky-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-sky-400 focus:outline-none @error('nombre_insumo') border-red-400 @enderror"
-                           placeholder="Ej: Limón, Cebolla, Aceite...">
-                    @error('nombre_insumo')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+            <div class="form-group">
+                <label class="form-label" for="unidad_medida">Unidad de Medida *</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <input id="unidad_medida" type="text" name="unidad_medida" class="form-control" placeholder="Ej: Kg, Litros, Gramos, Unidades" value="{{ old('unidad_medida', 'Kg') }}" required>
                 </div>
+                @error('unidad_medida') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
+            </div>
 
-                {{-- Stock y unidad --}}
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Stock Actual <span class="text-red-500">*</span></label>
-                        <input type="number" name="stock" value="{{ old('stock', 0) }}" min="0" step="0.01"
-                               class="w-full border border-sky-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-sky-400 focus:outline-none @error('stock') border-red-400 @enderror">
-                        @error('stock')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Unidad de Medida <span class="text-red-500">*</span></label>
-                        <select name="unidad_medida"
-                                class="w-full border border-sky-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-sky-400 focus:outline-none @error('unidad_medida') border-red-400 @enderror">
-                            <option value="">Seleccionar...</option>
-                            <option value="kg"       @selected(old('unidad_medida') === 'kg')>kg</option>
-                            <option value="L"        @selected(old('unidad_medida') === 'L')>Litros (L)</option>
-                            <option value="unidades" @selected(old('unidad_medida') === 'unidades')>Unidades</option>
-                            <option value="docenas"  @selected(old('unidad_medida') === 'docenas')>Docenas</option>
-                            <option value="g"        @selected(old('unidad_medida') === 'g')>Gramos (g)</option>
-                            <option value="ml"       @selected(old('unidad_medida') === 'ml')>ml</option>
-                        </select>
-                        @error('unidad_medida')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+            <div class="form-group">
+                <label class="form-label" for="stock_actual">Stock Actual *</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-cubes"></i>
+                    <input id="stock_actual" type="number" step="0.01" name="stock_actual" class="form-control" placeholder="Ej: 10.50" value="{{ old('stock_actual', 0) }}" min="0" required>
                 </div>
+                @error('stock_actual') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
+            </div>
 
-                {{-- Stock mínimo --}}
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Stock Mínimo <span class="text-red-500">*</span></label>
-                    <input type="number" name="stock_minimo" value="{{ old('stock_minimo', 5) }}" min="0" step="0.01"
-                           class="w-full border border-sky-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-sky-400 focus:outline-none @error('stock_minimo') border-red-400 @enderror">
-                    <p class="text-gray-400 text-xs mt-1">Se mostrará alerta cuando el stock llegue a este nivel.</p>
-                    @error('stock_minimo')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+            <div class="form-group">
+                <label class="form-label" for="stock_minimo">Stock Mínimo (Alerta) *</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <input id="stock_minimo" type="number" step="0.01" name="stock_minimo" class="form-control" placeholder="Ej: 2.00" value="{{ old('stock_minimo', 0) }}" min="0" required>
                 </div>
+                @error('stock_minimo') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
+            </div>
 
-                {{-- Botones --}}
-                <div class="flex gap-3 pt-2">
-                    <button type="submit"
-                            class="flex-1 bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg font-medium transition">
-                        Guardar Insumo
-                    </button>
-                    <a href="{{ route('inventario.index') }}"
-                       class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg font-medium transition">
-                        Cancelar
-                    </a>
-                </div>
-            </form>
-        </div>
+            <button type="submit" class="submit-button">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar Insumo
+            </button>
+        </form>
     </div>
-</x-app-layout>
+</div>
+@endsection

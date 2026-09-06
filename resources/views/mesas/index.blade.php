@@ -163,15 +163,16 @@
                                 <span class="main-data" style="font-weight: 500;">{{ $mesa->ubicacion ?? 'Salón Principal' }}</span>
                             </td>
                             <td>
-                                @if($mesa->estado === 'disponible')
-                                    <span class="status-badge status-disponible"><i class="fa-solid fa-circle"></i> Disponible</span>
-                                @elseif($mesa->estado === 'ocupada')
-                                    <span class="status-badge status-ocupada"><i class="fa-solid fa-circle"></i> Ocupada</span>
-                                @else
-                                    <span class="status-badge status-reservada"><i class="fa-solid fa-circle"></i> Reservada</span>
-                                @endif
-                            </td>
-                            <td>
+    @if($mesa->estado === 'disponible')
+        <span class="status-badge status-disponible"><i class="fa-solid fa-circle"></i> Disponible</span>
+    @elseif($mesa->estado === 'ocupada')
+        <span class="status-badge status-ocupada"><i class="fa-solid fa-circle"></i> Ocupada</span>
+    @elseif($mesa->estado === 'reservada')
+        <span class="status-badge status-reservada"><i class="fa-solid fa-circle"></i> Reservada</span>
+    @else
+        <span class="status-badge" style="color: #6c757d; background: #f8f9fa; border: 1px solid #dee2e6;"><i class="fa-solid fa-circle"></i> Mantenimiento</span>
+    @endif
+</td>
                                 <div class="actions">
                                     <a class="action-button" href="{{ route('mesas.show', $mesa) }}" title="Ver detalles">
                                         <i class="fa-regular fa-eye"></i>

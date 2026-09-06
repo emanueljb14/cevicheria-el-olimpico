@@ -8,16 +8,21 @@ use Illuminate\Http\Request;
 class MesaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra la lista de mesas y métricas.
      */
     public function index()
     {
-        $mesas = Mesa::orderBy('numero', 'asc')->get();
-        return view('mesas.index', compact('mesas'));
+        $mesas = Mesa::latest()->get();
+        
+        $totalMesas = $mesas->count();
+        $disponiblesCount = $mesas->where('estado', 'disponible')->count();
+        $ocupadasCount = $mesas->whereIn('estado', ['ocupada', 'reservada'])->count();
+
+        return view('mesas.index', compact('mesas', 'totalMesas', 'disponiblesCount', 'ocupadasCount'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Formulario para crear una nueva mesa.
      */
     public function create()
     {
@@ -25,74 +30,84 @@ class MesaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda una nueva mesa en la base de datos.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'numero'    => 'required|string|unique:mesas,numero|max:50',
-            'capacidad' => 'required|integer|min:1',
-            'estado'    => 'required|in:libre,ocupada,reservada',
-        ]);
+   
+public function store(Request $request)
+{
+    $request->validate([
+        'numero'    => 'required|string|unique:mesas,numero|max:50',
+        'capacidad' => 'required|integer|min:1',
+        'ubicacion' => 'nullable|string|max:100',
+        'estado'    => 'required|in:disponible,ocupada,reservada,mantenimiento',
+    ]);
 
-        Mesa::create($request->all());
+    Mesa::create($request->all());
 
-        return redirect()->route('mesas.index')->with('success', 'Mesa agregada correctamente.');
-    }
-
+    return redirect()->route('mesas.index')->with('success', 'Mesa agregada correctamente.');
+}
     /**
-     * Display the specified resource.
+     * Muestra el detalle de una mesa.
      */
-    public function show(Mesa $mesa)
+    public function show($id)
     {
+        $mesa = Mesa::findOrFail($id);
         return view('mesas.show', compact('mesa'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Formulario para editar una mesa existente.
      */
-    public function edit(Mesa $mesa)
+    public function edit($id)
     {
+        $mesa = Mesa::findOrFail($id);
         return view('mesas.edit', compact('mesa'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza la mesa en la base de datos.
      */
-    public function update(Request $request, Mesa $mesa)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'numero'    => 'required|string|max:50|unique:mesas,numero,' . $mesa->id,
+            'numero'    => 'required|string|max:50',
             'capacidad' => 'required|integer|min:1',
-            'estado'    => 'required|in:libre,ocupada,reservada',
+            'ubicacion' => 'nullable|string|max:100',
+            'estado'    => 'required|in:disponible,ocupada,reservada,mantenimiento',
         ]);
 
+        $mesa = Mesa::findOrFail($id);
         $mesa->update($request->all());
 
-        return redirect()->route('mesas.index')->with('success', 'Mesa actualizada correctamente.');
+        return redirect()->route('mesas.index')
+            ->with('success', 'Mesa actualizada con éxito.');
     }
 
     /**
-     * Cambiar rápidamente el estado de la mesa (útil para el mapa visual de salón).
+     * Elimina una mesa de la base de datos.
      */
-    public function cambiarEstado(Request $request, Mesa $mesa)
+    public function destroy($id)
     {
-        $request->validate([
-            'estado' => 'required|in:libre,ocupada,reservada',
-        ]);
-
-        $mesa->update(['estado' => $request->estado]);
-
-        return redirect()->back()->with('success', 'Estado de la mesa actualizado.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Mesa $mesa)
-    {
+        $mesa = Mesa::findOrFail($id);
         $mesa->delete();
 
-        return redirect()->route('mesas.index')->with('success', 'Mesa eliminada correctamente.');
+        return redirect()->route('mesas.index')
+            ->with('success', 'Mesa eliminada con éxito.');
     }
+
+    /**
+     * Método para cambiar estado rápido de la mesa.
+     */
+   public function cambiarEstado(Request $request, Mesa $mesa)
+{
+    $validated = $request->validate([
+        'estado' => 'required|in:disponible,ocupada,reservada,mantenimiento',
+    ]);
+
+    $mesa->update([
+        'estado' => $validated['estado']
+    ]);
+
+    return redirect()->back()->with('success', 'El estado de la mesa se actualizó correctamente.');
+}
 }
