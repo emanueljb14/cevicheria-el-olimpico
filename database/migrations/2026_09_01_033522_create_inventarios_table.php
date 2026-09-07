@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('inventarios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('producto_id')->nullable()->constrained('productos')->nullOnDelete();
             $table->string('nombre_insumo');
             $table->decimal('stock', 8, 2)->default(0.00);
             $table->string('unidad_medida'); // kg, L, docenas, unidades
             $table->decimal('stock_minimo', 8, 2)->default(5.00);
+            $table->decimal('precio_unitario', 8, 2)->nullable();
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }

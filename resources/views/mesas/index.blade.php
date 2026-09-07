@@ -33,7 +33,7 @@
     .search-box input:focus { border-color:var(--sea); box-shadow:0 0 0 3px rgba(0,167,167,.1); }
 
     .table-scroll { overflow-x:auto; }
-    .mesas-table { width:100%; min-width:800px; border-collapse:collapse; }
+    .mesas-table { width:100%; min-width:700px; border-collapse:collapse; }
     .mesas-table th { padding:13px 16px; color:#718187; background:#f7fafb; font-size:10px; font-weight:800; letter-spacing:.08em; text-align:left; text-transform:uppercase; white-space:nowrap; }
     .mesas-table td { padding:15px 16px; border-top:1px solid #ebf0f1; color:#3e4d53; font-size:13px; vertical-align:middle; }
     .mesas-table tbody tr:hover { background:#fbfdfd; }
@@ -45,7 +45,7 @@
 
     .capacity-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#0b5875; background:#e8f6f8; white-space:nowrap; }
     .status-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:999px; font-size:11px; font-weight:700; }
-    .status-disponible { color:#087451; background:#effdf8; border:1px solid #a7e5d2; }
+    .status-libre { color:#087451; background:#effdf8; border:1px solid #a7e5d2; }
     .status-ocupada { color:#a32a2a; background:#fdf2f2; border:1px solid #f8c4c4; }
     .status-reservada { color:#8a6200; background:#fffdf0; border:1px solid #fce2a6; }
 
@@ -53,7 +53,7 @@
     .action-button { display:grid; width:34px; height:34px; place-items:center; border:1px solid var(--line); border-radius:10px; color:var(--navy); background:white; cursor:pointer; text-decoration:none; transition:.15s; }
     .action-button:hover { color:white; border-color:var(--sea); background:var(--sea); }
     .edit-button:hover { border-color:var(--gold-dark); background:var(--gold-dark); color:var(--navy); }
-    .delete-button { color:#b53b35; }
+    .delete-button { color:#b53b35; border:none; }
     .delete-button:hover { border-color:#b53b35; background:#b53b35; color:white; }
     
     .empty-state { padding:55px 20px !important; text-align:center; }
@@ -77,9 +77,9 @@
 @section('content')
 @php
     $totalMesas = $mesas->count();
-    $disponibles = $mesas->where('estado', 'disponible')->count();
-    $ocupadas = $mesas->where('estado', 'ocupada')->count();
-    $reservadas = $mesas->where('estado', 'reservada')->count();
+    $libresCount = $mesas->where('estado', 'libre')->count();
+    $ocupadasCount = $mesas->where('estado', 'ocupada')->count();
+    $reservadasCount = $mesas->where('estado', 'reservada')->count();
 @endphp
 
 <div class="mesas-page">
@@ -87,7 +87,7 @@
         <div>
             <span class="mesas-kicker">Gestión de Salón</span>
             <h1>Mesas del Establecimiento</h1>
-            <p>Administra las mesas disponibles, su capacidad y su ubicación en el salón.</p>
+            <p>Administra las mesas del local y consulta su estado en tiempo real.</p>
         </div>
         <a class="primary-button" href="{{ route('mesas.create') }}">
             <i class="fa-solid fa-plus"></i> Nueva mesa
@@ -109,13 +109,13 @@
         </article>
         <article class="stat-card">
             <span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span>
-            <small>Disponibles</small>
-            <strong>{{ $disponibles }}</strong>
+            <small>Libres</small>
+            <strong>{{ $libresCount }}</strong>
         </article>
         <article class="stat-card">
             <span class="stat-icon"><i class="fa-solid fa-users-between-lines"></i></span>
             <small>Ocupadas / Reservadas</small>
-            <strong>{{ $ocupadas + $reservadas }}</strong>
+            <strong>{{ $ocupadasCount + $reservadasCount }}</strong>
         </article>
     </section>
 
@@ -124,7 +124,7 @@
             <h2>Mesas registradas <span class="record-count">{{ $totalMesas }}</span></h2>
             <label class="search-box" for="mesaSearch">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input id="mesaSearch" type="search" placeholder="Buscar mesa o ubicación...">
+                <input id="mesaSearch" type="search" placeholder="Buscar por número...">
             </label>
         </div>
 
@@ -132,9 +132,8 @@
             <table class="mesas-table">
                 <thead>
                     <tr>
-                        <th>Mesa</th>
+                        <th>Número / Identificador</th>
                         <th>Capacidad</th>
-                        <th>Ubicación</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -149,7 +148,7 @@
                                     </div>
                                     <div>
                                         <span class="main-data">Mesa #{{ $mesa->numero }}</span>
-                                        <span class="sub-data">ID Registro: #{{ $mesa->id }}</span>
+                                        <span class="sub-data">ID: {{ $mesa->id }}</span>
                                     </div>
                                 </div>
                             </td>
@@ -160,27 +159,23 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="main-data" style="font-weight: 500;">{{ $mesa->ubicacion ?? 'Salón Principal' }}</span>
+                                @if($mesa->estado === 'libre')
+                                    <span class="status-badge status-libre"><i class="fa-solid fa-circle"></i> Libre</span>
+                                @elseif($mesa->estado === 'ocupada')
+                                    <span class="status-badge status-ocupada"><i class="fa-solid fa-circle"></i> Ocupada</span>
+                                @elseif($mesa->estado === 'reservada')
+                                    <span class="status-badge status-reservada"><i class="fa-solid fa-circle"></i> Reservada</span>
+                                @endif
                             </td>
                             <td>
-    @if($mesa->estado === 'disponible')
-        <span class="status-badge status-disponible"><i class="fa-solid fa-circle"></i> Disponible</span>
-    @elseif($mesa->estado === 'ocupada')
-        <span class="status-badge status-ocupada"><i class="fa-solid fa-circle"></i> Ocupada</span>
-    @elseif($mesa->estado === 'reservada')
-        <span class="status-badge status-reservada"><i class="fa-solid fa-circle"></i> Reservada</span>
-    @else
-        <span class="status-badge" style="color: #6c757d; background: #f8f9fa; border: 1px solid #dee2e6;"><i class="fa-solid fa-circle"></i> Mantenimiento</span>
-    @endif
-</td>
                                 <div class="actions">
-                                    <a class="action-button" href="{{ route('mesas.show', $mesa) }}" title="Ver detalles">
+                                    <a class="action-button" href="{{ route('mesas.show', $mesa->id) }}" title="Ver detalles">
                                         <i class="fa-regular fa-eye"></i>
                                     </a>
-                                    <a class="action-button edit-button" href="{{ route('mesas.edit', $mesa) }}" title="Editar mesa">
+                                    <a class="action-button edit-button" href="{{ route('mesas.edit', $mesa->id) }}" title="Editar mesa">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <form method="POST" action="{{ route('mesas.destroy', $mesa) }}" onsubmit="return confirm('¿Eliminar esta mesa?')">
+                                    <form method="POST" action="{{ route('mesas.destroy', $mesa->id) }}" onsubmit="return confirm('¿Deseas eliminar la Mesa {{ $mesa->numero }}?')">
                                         @csrf
                                         @method('DELETE')
                                         <button class="action-button delete-button" type="submit" title="Eliminar mesa">
@@ -192,10 +187,10 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="empty-state" colspan="5">
+                            <td class="empty-state" colspan="4">
                                 <i class="fa-solid fa-chair"></i>
-                                <strong>No existen mesas registradas</strong>
-                                <span>Crea la primera mesa para gestionar la atención en salón.</span>
+                                <strong>No hay mesas registradas</strong>
+                                <span>Crea la primera mesa para comenzar a gestionar el salón.</span>
                             </td>
                         </tr>
                     @endforelse

@@ -26,6 +26,7 @@
     body.dark-mode .form-card { background:#0b3447; border-color:#28505f; }
     body.dark-mode .form-label { color:#fff; }
     body.dark-mode .form-control { background:#0d3a4d; border-color:#315565; color:#fff; }
+    body.dark-mode .secondary-button { background:#0d3a4d; border-color:#315565; color:#fff; }
 </style>
 @endpush
 
@@ -64,21 +65,11 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="ubicacion">Ubicación</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <input id="ubicacion" type="text" name="ubicacion" class="form-control" placeholder="Ej: Salón principal, Terraza" value="{{ old('ubicacion') }}">
-                </div>
-                @error('ubicacion') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
-            </div>
-
-            <div class="form-group">
                 <label class="form-label" for="estado">Estado Inicial *</label>
                 <select id="estado" name="estado" class="form-control" style="padding-left:14px;" required>
-                    <option value="disponible" {{ old('estado') == 'disponible' ? 'selected' : '' }}>Disponible</option>
+                    <option value="libre" {{ old('estado') == 'libre' ? 'selected' : '' }}>Libre</option>
                     <option value="ocupada" {{ old('estado') == 'ocupada' ? 'selected' : '' }}>Ocupada</option>
                     <option value="reservada" {{ old('estado') == 'reservada' ? 'selected' : '' }}>Reservada</option>
-                    <option value="mantenimiento" {{ old('estado') == 'mantenimiento' ? 'selected' : '' }}>Mantenimiento</option>
                 </select>
                 @error('estado') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
             </div>

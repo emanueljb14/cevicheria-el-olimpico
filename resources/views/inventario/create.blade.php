@@ -26,6 +26,7 @@
     body.dark-mode .form-card { background:#0b3447; border-color:#28505f; }
     body.dark-mode .form-label { color:#fff; }
     body.dark-mode .form-control { background:#0d3a4d; border-color:#315565; color:#fff; }
+    body.dark-mode .secondary-button { background:#0d3a4d; border-color:#315565; color:#fff; }
 </style>
 @endpush
 
@@ -76,9 +77,25 @@
                 <label class="form-label" for="stock_minimo">Stock Mínimo (Alerta) *</label>
                 <div class="input-box">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <input id="stock_minimo" type="number" step="0.01" name="stock_minimo" class="form-control" placeholder="Ej: 2.00" value="{{ old('stock_minimo', 0) }}" min="0" required>
+                    <input id="stock_minimo" type="number" step="0.01" name="stock_minimo" class="form-control" placeholder="Ej: 2.00" value="{{ old('stock_minimo', 5) }}" min="0" required>
                 </div>
                 @error('stock_minimo') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="producto_id">Producto Asociado (Opcional)</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-utensils"></i>
+                    <select id="producto_id" name="producto_id" class="form-control">
+                        <option value="">-- Sin producto asociado --</option>
+                        @foreach($productos as $producto)
+                            <option value="{{ $producto->id }}" {{ old('producto_id') == $producto->id ? 'selected' : '' }}>
+                                {{ $producto->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                @error('producto_id') <span style="color:#b53b35; font-size:12px; font-weight:600;">{{ $message }}</span> @enderror
             </div>
 
             <button type="submit" class="submit-button">
