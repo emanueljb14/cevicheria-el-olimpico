@@ -562,3 +562,93 @@ body.dark-mode .select-estado option {
     color: var(--olimpico-muted);
     font-weight: 600;
 }
+
+/* ===================================================
+   6. NUEVOS ESTILOS PARA BOTONES DE PEDIDOS
+   =================================================== */
+
+/* Botón: Guardar y Registrar Pedido (Turquesa Principal) */
+.btn-guardar-pedido {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--olimpico-primary);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 167, 167, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-guardar-pedido:hover {
+    background-color: var(--olimpico-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(11, 88, 117, 0.35);
+}
+
+.btn-guardar-pedido:active {
+    transform: translateY(0);
+}
+
+/* Botón: Eliminar Ítem (Icono 'x') */
+.btn-eliminar-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: #fee2e2;
+    color: #ef4444;
+    border: 1px solid #fca5a5;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-eliminar-item:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    transform: scale(1.05);
+}
+
+/* Botón: Volver (Superior Derecho) */
+.btn-volver-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.45rem 0.9rem;
+    background-color: var(--olimpico-card);
+    color: var(--olimpico-text);
+    border: 1px solid var(--olimpico-border);
+    border-radius: 0.375rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.btn-volver-top:hover {
+    background-color: var(--olimpico-soft);
+    color: var(--olimpico-primary);
+    border-color: var(--olimpico-primary);
+}
+
+body.dark-mode .btn-volver-top {
+    background-color: #0b3447;
+    color: #edf7f8;
+    border-color: #1e4962;
+}
+
+body.dark-mode .btn-volver-top:hover {
+    background-color: #0b5875;
+    color: #ffffff;
+}
