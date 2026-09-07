@@ -5,3 +5,6 @@ scikit-learn
 tensorflow
 torch
 streamlit
+sqlalchemy
+mysql-connector-python
+joblib
