@@ -3,7 +3,7 @@
 {{-- Importamos el archivo CSS de pedidos en la cabecera usando Vite --}}
 @push('styles')
     @vite(['resources/css/pedidos.css'])
-@endpush
+@endpu
 
 @section('content')
 <div class="pedidos-container">
