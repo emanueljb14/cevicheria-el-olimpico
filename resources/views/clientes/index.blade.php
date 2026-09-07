@@ -5,11 +5,11 @@
 
 @push('styles')
 <style>
-    .clients-page { --navy:#062b3d; --sea:#00a7a7; --gold:#f6c453; --gold-dark:#e0b043; --paper:#fff; --muted:#68757d; --line:#dfe9eb; color:#18242b; }
-    .clients-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:24px; }
-    .clients-kicker { display:block; margin-bottom:7px; color:var(--sea); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
-    .clients-header h1 { margin:0 0 7px; color:var(--navy); font:700 clamp(30px,4vw,43px)/1.08 'Playfair Display',serif; }
-    .clients-header p { margin:0; color:var(--muted); }
+    .clientes-page { --navy:#062b3d; --sea:#00a7a7; --gold:#f6c453; --gold-dark:#e0b043; --paper:#fff; --muted:#68757d; --line:#dfe9eb; color:#18242b; }
+    .clientes-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:24px; }
+    .clientes-kicker { display:block; margin-bottom:7px; color:var(--sea); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    .clientes-header h1 { margin:0 0 7px; color:var(--navy); font:700 clamp(30px,4vw,43px)/1.08 'Playfair Display',serif; }
+    .clientes-header p { margin:0; color:var(--muted); }
     .primary-button { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 18px; border-radius:999px; color:var(--navy); background:var(--gold); box-shadow:0 10px 22px rgba(246,196,83,.24); font-size:13px; font-weight:800; text-decoration:none; transition:.2s; }
     .primary-button:hover { color:var(--navy); background:var(--gold-dark); transform:translateY(-2px); }
 
@@ -17,7 +17,7 @@
     .flash-success { border:1px solid #a7e5d2; color:#087451; background:#effdf8; }
     .flash-info { border:1px solid #b8e4ea; color:#0b5875; background:#effcfd; }
     
-    .client-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px; }
+    .cliente-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px; }
     .stat-card { position:relative; overflow:hidden; padding:20px; border:1px solid var(--line); border-radius:18px; background:var(--paper); box-shadow:0 10px 28px rgba(6,43,61,.06); }
     .stat-icon { display:grid; width:41px; height:41px; margin-bottom:12px; place-items:center; border-radius:13px; color:var(--sea); background:#e7f7f7; }
     .stat-card small { display:block; margin-bottom:5px; color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
@@ -33,21 +33,28 @@
     .search-box input:focus { border-color:var(--sea); box-shadow:0 0 0 3px rgba(0,167,167,.1); }
 
     .table-scroll { overflow-x:auto; }
-    .clients-table { width:100%; min-width:800px; border-collapse:collapse; }
-    .clients-table th { padding:13px 16px; color:#718187; background:#f7fafb; font-size:10px; font-weight:800; letter-spacing:.08em; text-align:left; text-transform:uppercase; white-space:nowrap; }
-    .clients-table td { padding:15px 16px; border-top:1px solid #ebf0f1; color:#3e4d53; font-size:13px; vertical-align:middle; }
-    .clients-table tbody tr:hover { background:#fbfdfd; }
+    .clientes-table { width:100%; min-width:800px; border-collapse:collapse; }
+    .clientes-table th { padding:13px 16px; color:#718187; background:#f7fafb; font-size:10px; font-weight:800; letter-spacing:.08em; text-align:left; text-transform:uppercase; white-space:nowrap; }
+    .clientes-table td { padding:15px 16px; border-top:1px solid #ebf0f1; color:#3e4d53; font-size:13px; vertical-align:middle; }
+    .clientes-table tbody tr:hover { background:#fbfdfd; }
     
-    .client-code { display:flex; align-items:center; gap:9px; color:var(--navy); font-weight:800; }
-    .client-code i { display:grid; width:34px; height:34px; place-items:center; border-radius:10px; color:var(--sea); background:#e7f7f7; }
+    .cliente-info { display:flex; align-items:center; gap:12px; }
+    .cliente-icon-box { width:40px; height:40px; border-radius:10px; display:grid; place-items:center; background:#e7f7f7; color:var(--sea); border:1px solid var(--line); font-size:16px; }
     .main-data { display:block; color:var(--navy); font-weight:700; }
-    .sub-data { display:block; margin-top:3px; color:#89979c; font-size:11px; }
+    .sub-data { display:block; margin-top:2px; color:#89979c; font-size:11px; }
+
+    .contact-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#0b5875; background:#e8f6f8; white-space:nowrap; text-decoration:none; }
+    .contact-badge:hover { background:#d8f0f3; }
     
+    .status-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:999px; font-size:11px; font-weight:700; }
+    .status-activo { color:#087451; background:#effdf8; border:1px solid #a7e5d2; }
+    .status-inactivo { color:#a32a2a; background:#fdf2f2; border:1px solid #f8c4c4; }
+
     .actions { display:flex; gap:7px; }
     .action-button { display:grid; width:34px; height:34px; place-items:center; border:1px solid var(--line); border-radius:10px; color:var(--navy); background:white; cursor:pointer; text-decoration:none; transition:.15s; }
     .action-button:hover { color:white; border-color:var(--sea); background:var(--sea); }
     .edit-button:hover { border-color:var(--gold-dark); background:var(--gold-dark); color:var(--navy); }
-    .delete-button { color:#b53b35; }
+    .delete-button { color:#b53b35; border:none; }
     .delete-button:hover { border-color:#b53b35; background:#b53b35; color:white; }
     
     .empty-state { padding:55px 20px !important; text-align:center; }
@@ -55,35 +62,35 @@
     .empty-state strong { display:block; margin-bottom:5px; color:var(--navy); font-size:16px; }
     .empty-state span { color:var(--muted); }
 
-    body.dark-mode .clients-page { --paper:#0b3447; --line:#28505f; color:#eaf3f5; }
-    body.dark-mode .clients-header h1, body.dark-mode .stat-card strong, body.dark-mode .history-toolbar h2,
-    body.dark-mode .client-code, body.dark-mode .main-data, body.dark-mode .empty-state strong { color:#fff; }
-    body.dark-mode .clients-table th { color:#b9cbd0; background:#082838; }
-    body.dark-mode .clients-table td { border-color:#264b5a; color:#d9e5e8; }
-    body.dark-mode .clients-table tbody tr:hover { background:#0e3a4e; }
+    body.dark-mode .clientes-page { --paper:#0b3447; --line:#28505f; color:#eaf3f5; }
+    body.dark-mode .clientes-header h1, body.dark-mode .stat-card strong, body.dark-mode .history-toolbar h2,
+    body.dark-mode .main-data, body.dark-mode .empty-state strong { color:#fff; }
+    body.dark-mode .clientes-table th { color:#b9cbd0; background:#082838; }
+    body.dark-mode .clientes-table td { border-color:#264b5a; color:#d9e5e8; }
+    body.dark-mode .clientes-table tbody tr:hover { background:#0e3a4e; }
     body.dark-mode .action-button, body.dark-mode .search-box input { color:#e7f1f3; border-color:#315565; background:#0d3a4d; }
 
-    @media(max-width:800px) { .client-stats{grid-template-columns:1fr} }
-    @media(max-width:650px) { .clients-header,.history-toolbar{align-items:stretch;flex-direction:column}.primary-button,.search-box{width:100%}.stat-card{padding:16px}.stat-card strong{font-size:18px} }
+    @media(max-width:800px) { .cliente-stats{grid-template-columns:1fr} }
+    @media(max-width:650px) { .clientes-header,.history-toolbar{align-items:stretch;flex-direction:column}.primary-button,.search-box{width:100%}.stat-card{padding:16px}.stat-card strong{font-size:18px} }
 </style>
 @endpush
 
 @section('content')
 @php
     $totalClientes = $clientes->count();
-    $conTelefono = $clientes->whereNotNull('telefono')->count();
-    $conEmail = $clientes->whereNotNull('email')->count();
+    $activosCount = $clientes->where('estado', 'activo')->count();
+    $inactivosCount = $clientes->where('estado', 'inactivo')->count();
 @endphp
 
-<div class="clients-page">
-    <header class="clients-header">
+<div class="clientes-page">
+    <header class="clientes-header">
         <div>
-            <span class="clients-kicker">Directorio de atención</span>
-            <h1>Lista de clientes</h1>
-            <p>Gestiona la información de contacto y registro de tus clientes.</p>
+            <span class="clientes-kicker">Directorio de Contactos</span>
+            <h1>Clientes Registrados</h1>
+            <p>Gestiona la información, teléfonos y estado de tus clientes.</p>
         </div>
         <a class="primary-button" href="{{ route('clientes.create') }}">
-            <i class="fa-solid fa-user-plus"></i> Registrar nuevo cliente
+            <i class="fa-solid fa-user-plus"></i> Nuevo cliente
         </a>
     </header>
 
@@ -94,76 +101,89 @@
         <div class="flash flash-info"><i class="fa-solid fa-circle-info"></i><span>{{ session('info') }}</span></div>
     @endif
 
-    <section class="client-stats">
+    <section class="cliente-stats">
         <article class="stat-card">
             <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
-            <small>Total registrados</small>
+            <small>Total clientes</small>
             <strong>{{ $totalClientes }}</strong>
         </article>
         <article class="stat-card">
-            <span class="stat-icon"><i class="fa-solid fa-phone"></i></span>
-            <small>Con teléfono</small>
-            <strong>{{ $conTelefono }}</strong>
+            <span class="stat-icon"><i class="fa-solid fa-user-check"></i></span>
+            <small>Activos</small>
+            <strong>{{ $activosCount }}</strong>
         </article>
         <article class="stat-card">
-            <span class="stat-icon"><i class="fa-solid fa-envelope"></i></span>
-            <small>Con correo electrónico</small>
-            <strong>{{ $conEmail }}</strong>
+            <span class="stat-icon"><i class="fa-solid fa-user-slash"></i></span>
+            <small>Inactivos</small>
+            <strong>{{ $inactivosCount }}</strong>
         </article>
     </section>
 
     <section class="history-card">
         <div class="history-toolbar">
-            <h2>Clientes registrados <span class="record-count">{{ $totalClientes }}</span></h2>
-            <label class="search-box" for="clientSearch">
+            <h2>Clientes <span class="record-count">{{ $totalClientes }}</span></h2>
+            <label class="search-box" for="clienteSearch">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input id="clientSearch" type="search" placeholder="Buscar por nombre, teléfono o email...">
+                <input id="clienteSearch" type="search" placeholder="Buscar por nombre, DNI o teléfono...">
             </label>
         </div>
 
         <div class="table-scroll">
-            <table class="clients-table">
+            <table class="clientes-table">
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Cliente</th>
-                        <th>Teléfono</th>
-                        <th>Correo Electrónico</th>
+                        <th>Cliente / DNI</th>
+                        <th>Contacto</th>
                         <th>Dirección</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($clientes as $cliente)
-                        <tr class="client-row">
+                        <tr class="cliente-row">
                             <td>
-                                <span class="client-code">
-                                    <i class="fa-solid fa-user"></i>
-                                    #CLI-{{ str_pad($cliente->id, 4, '0', STR_PAD_LEFT) }}
+                                <div class="cliente-info">
+                                    <div class="cliente-icon-box">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <span class="main-data">{{ $cliente->nombre }} {{ $cliente->apellido }}</span>
+                                        <span class="sub-data">DNI/RUC: {{ $cliente->documento ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="contact-badge" href="tel:{{ $cliente->telefono }}">
+                                    <i class="fa-solid fa-phone"></i>
+                                    {{ $cliente->telefono ?? 'Sin teléfono' }}
+                                </a>
+                                @if($cliente->email)
+                                    <span class="sub-data" style="margin-top:4px;">{{ $cliente->email }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                <span class="sub-data" style="color:var(--navy); font-size:12px;">
+                                    <i class="fa-solid fa-location-dot" style="color:var(--sea);"></i> 
+                                    {{ $cliente->direccion ?? 'No especificada' }}
                                 </span>
                             </td>
                             <td>
-                                <span class="main-data">{{ $cliente->nombre }}</span>
-                                <span class="sub-data">Registrado: {{ $cliente->created_at?->format('d/m/Y') ?? 'Sin fecha' }}</span>
-                            </td>
-                            <td>
-                                <span class="main-data">{{ $cliente->telefono ?? 'Sin teléfono' }}</span>
-                            </td>
-                            <td>
-                                <span class="main-data">{{ $cliente->email ?? 'Sin correo' }}</span>
-                            </td>
-                            <td>
-                                <span class="main-data">{{ $cliente->direccion ?? 'Sin dirección' }}</span>
+                                @if(($cliente->estado ?? 'activo') === 'activo')
+                                    <span class="status-badge status-activo"><i class="fa-solid fa-circle"></i> Activo</span>
+                                @else
+                                    <span class="status-badge status-inactivo"><i class="fa-solid fa-circle"></i> Inactivo</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="actions">
-                                    <a class="action-button" href="{{ route('clientes.show', $cliente) }}" title="Ver detalle">
+                                    <a class="action-button" href="{{ route('clientes.show', $cliente->id) }}" title="Ver detalles">
                                         <i class="fa-regular fa-eye"></i>
                                     </a>
-                                    <a class="action-button edit-button" href="{{ route('clientes.edit', $cliente) }}" title="Editar cliente">
+                                    <a class="action-button edit-button" href="{{ route('clientes.edit', $cliente->id) }}" title="Editar cliente">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <form method="POST" action="{{ route('clientes.destroy', $cliente) }}" onsubmit="return confirm('¿Deseas eliminar este cliente?')">
+                                    <form method="POST" action="{{ route('clientes.destroy', $cliente->id) }}" onsubmit="return confirm('¿Deseas eliminar al cliente {{ $cliente->nombre }}?')">
                                         @csrf
                                         @method('DELETE')
                                         <button class="action-button delete-button" type="submit" title="Eliminar cliente">
@@ -175,10 +195,10 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="empty-state" colspan="6">
-                                <i class="fa-solid fa-users-slash"></i>
+                            <td class="empty-state" colspan="5">
+                                <i class="fa-solid fa-users"></i>
                                 <strong>No hay clientes registrados</strong>
-                                <span>Agrega el primer cliente para comenzar a gestionar tu directorio.</span>
+                                <span>Agrega el primer cliente para gestionar tus contactos.</span>
                             </td>
                         </tr>
                     @endforelse
@@ -191,12 +211,12 @@
 
 @push('scripts')
 <script>
-    const clientSearch = document.getElementById('clientSearch');
-    const clientRows = document.querySelectorAll('.client-row');
+    const clienteSearch = document.getElementById('clienteSearch');
+    const clienteRows = document.querySelectorAll('.cliente-row');
     
-    clientSearch?.addEventListener('input', event => {
+    clienteSearch?.addEventListener('input', event => {
         const term = event.target.value.toLowerCase().trim();
-        clientRows.forEach(row => {
+        clienteRows.forEach(row => {
             row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
         });
     });

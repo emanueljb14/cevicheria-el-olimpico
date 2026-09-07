@@ -201,7 +201,7 @@
                 <p class="hero-description">Ceviches, jaleas y platos marinos preparados con pescado fresco, limón peruano y esa sazón que convierte un almuerzo en un buen recuerdo.</p>
                 <div class="hero-actions">
                     <a href="#carta" class="button button-gold">Descubrir la carta <i class="fa-solid fa-arrow-down"></i></a>
-                    <a href="https://wa.me/51920555000?text={{ urlencode('Hola, quiero reservar una mesa en El Olímpico.') }}" target="_blank" class="button button-ghost"><i class="fa-brands fa-whatsapp"></i> Reservar una mesa</a>
+                    <a href="https://wa.me/51960860791?text={{ urlencode('Hola, quiero reservar una mesa en El Olímpico.') }}" target="_blank" class="button button-ghost"><i class="fa-brands fa-whatsapp"></i> Reservar una mesa</a>
                 </div>
             </div>
             <div class="hero-note">
@@ -292,14 +292,14 @@
                     <h2>Tu próxima mesa te está esperando.</h2>
                     <p>Escríbenos para reservar o consultar la disponibilidad de tus platos favoritos. Te responderemos directamente por WhatsApp.</p>
                     <div class="visit-actions">
-                        <a class="button button-gold" target="_blank" href="https://wa.me/51920555000?text={{ urlencode('Hola, quiero reservar una mesa en El Olímpico.') }}"><i class="fa-brands fa-whatsapp"></i> Reservar ahora</a>
+                        <a class="button button-gold" target="_blank" href="https://wa.me/51960860791?text={{ urlencode('Hola, quiero reservar una mesa en El Olímpico.') }}"><i class="fa-brands fa-whatsapp"></i> Reservar ahora</a>
                         <a class="button button-ghost" href="tel:+51920555000"><i class="fa-solid fa-phone"></i> Llamar</a>
                     </div>
                 </div>
                 <div class="visit-card">
                     <div class="visit-row"><i class="fa-solid fa-location-dot"></i><div><strong>Encuéntranos</strong><small>Agrega aquí la dirección real del local</small></div></div>
                     <div class="visit-row"><i class="fa-regular fa-clock"></i><div><strong>Horario de atención</strong><small>Lunes a domingo · 10:00 a. m. – 8:00 p. m.</small></div></div>
-                    <div class="visit-row"><i class="fa-solid fa-phone"></i><div><strong>Reservas y pedidos</strong><small>+51 920 555 000</small></div></div>
+                    <div class="visit-row"><i class="fa-solid fa-phone"></i><div><strong>Reservas y pedidos</strong><small>+51 960 860 791</small></div></div>
                 </div>
             </div>
         </section>
@@ -309,12 +309,12 @@
         <div class="container footer-grid">
             <div><div class="logo"><span class="logo-mark"><i class="fa-solid fa-fish-fins"></i></span><span><strong>EL OLÍMPICO</strong><small>CEVICHERÍA PERUANA</small></span></div><p style="margin-top:18px;max-width:380px">Frescura, sazón y una mesa preparada para compartir el auténtico sabor marino del Perú.</p><div class="socials"><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a><a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a><a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a></div></div>
             <div><h3>Explora</h3><p><a href="#carta">Nuestra carta</a></p><p><a href="#historia">Nuestra historia</a></p><p><a href="#visitanos">Reservas</a></p></div>
-            <div><h3>Información</h3><p><i class="fa-solid fa-location-dot"></i> Lima, Perú</p><p><i class="fa-solid fa-phone"></i> +51 920 555 000</p><p><i class="fa-regular fa-envelope"></i> contacto@elolimpico.pe</p></div>
+            <div><h3>Información</h3><p><i class="fa-solid fa-location-dot"></i> Lima, Perú</p><p><i class="fa-solid fa-phone"></i> +51 960 860 791</p><p><i class="fa-regular fa-envelope"></i> contacto@elolimpico.pe</p></div>
         </div>
         <div class="container copyright">© {{ date('Y') }} Cevichería El Olímpico. Hecho con sabor peruano.</div>
     </footer>
 
-    <a class="whatsapp" target="_blank" href="https://wa.me/51920555000?text={{ urlencode('Hola, deseo información sobre El Olímpico.') }}" aria-label="Contactar por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+    <a class="whatsapp" target="_blank" href="https://wa.me/51960860791?text={{ urlencode('Hola, deseo información sobre El Olímpico.') }}" aria-label="Contactar por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
 
     <script>
         const header = document.getElementById('siteHeader');

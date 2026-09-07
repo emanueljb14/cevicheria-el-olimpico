@@ -236,7 +236,7 @@
                 <a class="sidebar-link {{ request()->routeIs('ventas.*') ? 'active' : '' }}" href="{{ route('ventas.index') }}">
                     <i class="fa-solid fa-cash-register"></i><span>Ventas</span>
                 </a>
-                <a class="sidebar-link {{ request()->routeIs('caja.*') ? 'active' : '' }}" href="#" data-bs-toggle="modal" data-bs-target="#arqueoCajaModal">
+                <a class="sidebar-link {{ request()->routeIs('cierre-caja.*') ? 'active' : '' }}" href="{{ route('cierre-caja.index') }}">
                     <i class="fa-solid fa-vault text-warning"></i><span>Cierre de Caja</span>
                 </a>
                 <a class="sidebar-link {{ request()->routeIs('reportes.*') ? 'active' : '' }}" href="{{ route('reportes.index') }}">

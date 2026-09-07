@@ -27,32 +27,38 @@
         <form action="{{ route('clientes.store') }}" method="POST">
             @csrf
 
-            <!-- Identificación -->
+            <!-- Datos Generales -->
             <div class="mb-4">
                 <h6 class="text-dark fw-bold mb-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-card-heading" style="color: #d99100;"></i> Documentación de Identidad
+                    <i class="bi bi-person-vcard-fill" style="color: #d99100;"></i> Información del Cliente
                 </h6>
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <label for="tipo_documento" class="form-label text-uppercase text-secondary fw-bold fs-7">Tipo Doc. <span class="text-danger">*</span></label>
-                        <select name="tipo_documento" id="tipo_documento" class="form-select border-0 text-dark p-3 @error('tipo_documento') is-invalid @enderror" style="background-color: #f8f9fa;" required>
-                            <option value="DNI" {{ old('tipo_documento') == 'DNI' ? 'selected' : '' }}>DNI</option>
-                            <option value="RUC" {{ old('tipo_documento') == 'RUC' ? 'selected' : '' }}>RUC</option>
-                            <option value="CE" {{ old('tipo_documento') == 'CE' ? 'selected' : '' }}>Carné de Extranjería</option>
-                        </select>
+                    <div class="col-12">
+                        <label for="nombre" class="form-label text-uppercase text-secondary fw-bold fs-7">Nombre Completo / Empresa <span class="text-danger">*</span></label>
+                        <input type="text" name="nombre" id="nombre" class="form-control border-0 text-dark p-3 @error('nombre') is-invalid @enderror" style="background-color: #f8f9fa;" value="{{ old('nombre') }}" placeholder="Ej. Juan Pérez" required>
+                        @error('nombre')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+                </div>
+            </div>
 
-<<<<<<< HEAD
-                {{-- Teléfono (9 dígitos numéricos estrictos) --}}
-                <div class="form-group">
-                    <label for="telefono">Teléfono / Celular</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-phone"></i>
+            <hr style="border-color: #f0f0f0;" class="my-4">
+
+            <!-- Datos de Contacto -->
+            <div class="mb-4">
+                <h6 class="text-dark fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-geo-alt-fill" style="color: #d99100;"></i> Datos de Contacto
+                </h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="telefono" class="form-label text-uppercase text-secondary fw-bold fs-7">Teléfono / Celular</label>
                         <input 
                             type="tel" 
                             id="telefono" 
                             name="telefono" 
-                            class="form-control @error('telefono') is-invalid @enderror" 
+                            class="form-control border-0 text-dark p-3 @error('telefono') is-invalid @enderror" 
+                            style="background-color: #f8f9fa;" 
                             value="{{ old('telefono') }}" 
                             placeholder="Ej. 987654321"
                             maxlength="9"
@@ -61,66 +67,36 @@
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9)"
                             title="Debe ingresar exactamente 9 dígitos numéricos"
                         >
-=======
-                    <div class="col-md-8">
-                        <label for="numero_documento" class="form-label text-uppercase text-secondary fw-bold fs-7">N° Documento <span class="text-danger">*</span></label>
-                        <input type="text" name="numero_documento" id="numero_documento" class="form-control border-0 text-dark p-3 @error('numero_documento') is-invalid @enderror" style="background-color: #f8f9fa;" value="{{ old('numero_documento') }}" placeholder="Ej. 72839102" required>
-                        @error('numero_documento')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @error('telefono')
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
->>>>>>> origin/omar
                     </div>
 
-<<<<<<< HEAD
-                {{-- Correo Electrónico (Obligatorio, con @ y terminado en .com) --}}
-                <div class="form-group">
-                    <label for="email">Correo electrónico *</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-envelope"></i>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label text-uppercase text-secondary fw-bold fs-7">Correo Electrónico <span class="text-danger">*</span></label>
                         <input 
                             type="email" 
                             id="email" 
                             name="email" 
-                            class="form-control @error('email') is-invalid @enderror" 
+                            class="form-control border-0 text-dark p-3 @error('email') is-invalid @enderror" 
+                            style="background-color: #f8f9fa;" 
                             value="{{ old('email') }}" 
                             placeholder="cliente@correo.com"
                             pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$"
-                            title="El correo es obligatorio, debe incluir '@' y terminar obligatoriamente en '.com'"
+                            title="El correo debe incluir '@' y terminar obligatoriamente en '.com'"
                             required
                         >
-=======
-                    <div class="col-12 mt-3">
-                        <label for="nombre" class="form-label text-uppercase text-secondary fw-bold fs-7">Nombre Completo / Razón Social <span class="text-danger">*</span></label>
-                        <input type="text" name="nombre" id="nombre" class="form-control border-0 text-dark p-3 @error('nombre') is-invalid @enderror" style="background-color: #f8f9fa;" value="{{ old('nombre') }}" placeholder="Ej. Juan Pérez u Holas S.A.C." required>
-                        @error('nombre')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
->>>>>>> origin/omar
-                    </div>
-                </div>
-            </div>
-
-            <hr style="border-color: #f0f0f0;" class="my-4">
-
-            <!-- Contacto -->
-            <div class="mb-4">
-                <h6 class="text-dark fw-bold mb-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-geo-alt-fill" style="color: #d99100;"></i> Datos de Contacto
-                </h6>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="telefono" class="form-label text-uppercase text-secondary fw-bold fs-7">Teléfono / Celular</label>
-                        <input type="text" name="telefono" id="telefono" class="form-control border-0 text-dark p-3" style="background-color: #f8f9fa;" value="{{ old('telefono') }}" placeholder="987654321">
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="email" class="form-label text-uppercase text-secondary fw-bold fs-7">Correo Electrónico</label>
-                        <input type="email" name="email" id="email" class="form-control border-0 text-dark p-3" style="background-color: #f8f9fa;" value="{{ old('email') }}" placeholder="cliente@ejemplo.com">
                     </div>
 
                     <div class="col-12 mt-3">
                         <label for="direccion" class="form-label text-uppercase text-secondary fw-bold fs-7">Dirección de Entrega</label>
-                        <input type="text" name="direccion" id="direccion" class="form-control border-0 text-dark p-3" style="background-color: #f8f9fa;" value="{{ old('direccion') }}" placeholder="Av. Los Olivos 123">
+                        <input type="text" name="direccion" id="direccion" class="form-control border-0 text-dark p-3 @error('direccion') is-invalid @enderror" style="background-color: #f8f9fa;" value="{{ old('direccion') }}" placeholder="Av. Los Olivos 123">
+                        @error('direccion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>
